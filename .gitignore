@@ -14,3 +14,9 @@ Thumbs.db
 terraform.lock.*
 terraform.tfstate
 terraform.tfstate.*
+*.tfvars
+*.tfvars.json
+secrets.*
+.env
+.env.local
+.env.*.local
