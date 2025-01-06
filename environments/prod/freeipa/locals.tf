@@ -42,7 +42,7 @@ locals {
   }
 
   nodes = {
-    "prod-freeipa" = { type = "freeipa", vm_id = 110, ip = "172.16.3.110/23" }
+    "prod-freeipa" = { type = "freeipa", vm_id = 110, ip = "172.16.2.110/23" }
   }
 
   node_configs = {

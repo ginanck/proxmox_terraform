@@ -42,7 +42,7 @@ locals {
   }
 
   nodes = {
-    "prod-jenkins" = { type = "master", vm_id = 211, ip = "172.16.3.211/23" }
+    "prod-jenkins" = { type = "master", vm_id = 111, ip = "172.16.2.111/23" }
   }
 
   node_configs = {

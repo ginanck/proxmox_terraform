@@ -74,8 +74,8 @@ locals {
 
   nodes = {
     "k8s-dev-master1" = { type = "master", vm_id = 221, ip = "172.16.3.221/23" }
-    "k8s-dev-worker1" = { type = "worker", vm_id = 222, ip = "172.16.3.222/23" }
-    "k8s-dev-worker2" = { type = "worker", vm_id = 223, ip = "172.16.3.223/23" }
+    "k8s-dev-worker1" = { type = "worker", vm_id = 225, ip = "172.16.3.225/23" }
+    "k8s-dev-worker2" = { type = "worker", vm_id = 226, ip = "172.16.3.226/23" }
   }
 
   node_configs = {

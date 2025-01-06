@@ -42,7 +42,7 @@ locals {
   }
 
   nodes = {
-    "dev-haproxy1" = { type = "haproxy", vm_id = 213, ip = "172.16.3.213/23" }
+    "dev-haproxy1" = { type = "haproxy", vm_id = 215, ip = "172.16.3.215/23" }
   }
 
   node_configs = {

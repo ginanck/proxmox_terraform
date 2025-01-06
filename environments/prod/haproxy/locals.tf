@@ -53,8 +53,8 @@ locals {
   }
 
   nodes = {
-    "prod-haproxy1" = { type = "haproxy", vm_id = 113, ip = "172.16.2.113/24" }
-    "prod-haproxy2" = { type = "haproxy", vm_id = 114, ip = "172.16.2.114/24" }
+    "prod-haproxy1" = { type = "haproxy", vm_id = 115, ip = "172.16.2.115/24" }
+    "prod-haproxy2" = { type = "haproxy", vm_id = 116, ip = "172.16.2.116/24" }
   }
 
   node_configs = {

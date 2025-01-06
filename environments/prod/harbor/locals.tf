@@ -42,7 +42,7 @@ locals {
   }
 
   nodes = {
-    "prod-harbor" = { type = "harbor", vm_id = 112, ip = "172.16.3.112/23" }
+    "prod-harbor" = { type = "harbor", vm_id = 112, ip = "172.16.2.112/23" }
   }
 
   node_configs = {

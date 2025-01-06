@@ -42,7 +42,7 @@ locals {
   }
 
   nodes = {
-    "dev-nfs" = { type = "nfs", vm_id = 214, ip = "172.16.3.214/24" }
+    "dev-nfs" = { type = "nfs", vm_id = 213, ip = "172.16.3.213/24" }
   }
 
   node_configs = {
