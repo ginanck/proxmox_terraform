@@ -37,8 +37,8 @@ locals {
     }
 
     user_account = {
-      password    = "alma"
-      username    = "alma"
+      password    = "ansible"
+      username    = "ansible"
     }
   }
 
