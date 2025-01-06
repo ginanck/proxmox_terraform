@@ -2,6 +2,7 @@ locals {
   node_defaults = {
     master = {
       tags = ["master", "k8s", "dev"]
+      description     = "DEV K8S Master VM managed by Terraform"
       clone = {
         vm_id = 8052
       }
@@ -28,8 +29,9 @@ locals {
 
     worker = {
       tags = ["worker", "k8s", "dev"]
+      description     = "DEV - K8S Worker VM managed by Terraform"
       clone = {
-        vm_id = 8053
+        vm_id = 8052
       }
 
       cpu = {

@@ -2,6 +2,7 @@ locals {
   node_defaults = {
     freeipa = {
       tags = ["freeipa", "registry", "dev"]
+      description     = "DEV FreeIPA VM managed by Terraform"
       clone = {
         vm_id = 8151
       }

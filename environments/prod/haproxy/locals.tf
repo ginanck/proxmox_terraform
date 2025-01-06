@@ -2,6 +2,7 @@ locals {
   node_defaults = {
     haproxy = {
       tags = ["haproxy", "loadbalancer", "prod"]
+      description     = "PROD HAProxy VM managed by Terraform"
       clone = {
         vm_id = 8100
       }

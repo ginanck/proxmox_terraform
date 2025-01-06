@@ -2,6 +2,7 @@ locals {
   node_defaults = {
     nfs = {
       tags = ["nfs", "storage", "prod"]
+      description     = "PROD NFS Server VM managed by Terraform"
       clone = {
         vm_id = 8150
       }

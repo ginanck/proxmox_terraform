@@ -2,8 +2,9 @@ locals {
   node_defaults = {
     haproxy = {
       tags = ["haproxy", "loadbalancer", "dev"]
+      description     = "DEV HAProxy VM managed by Terraform"
       clone = {
-        vm_id = 8100
+        vm_id = 8151
       }
 
       cpu = {
@@ -35,8 +36,8 @@ locals {
     }
 
     user_account = {
-      password    = "rocky"
-      username    = "rocky"
+      password    = "alma"
+      username    = "alma"
     }
   }
 

@@ -2,8 +2,9 @@ locals {
   node_defaults = {
     master = {
       tags = ["master", "jenkins", "dev"]
+      description     = "DEV Jenkins Master VM managed by Terraform"
       clone = {
-        vm_id = 8150
+        vm_id = 8151
       }
 
       cpu = {
