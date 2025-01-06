@@ -13,6 +13,7 @@ locals {
 
       memory = {
         dedicated = 4096
+        floating  = 1024
       }
 
       additional_disks = [
