@@ -29,7 +29,7 @@ locals {
 
     worker = {
       tags = ["worker", "k8s", "dev"]
-      description     = "DEV - K8S Worker VM managed by Terraform"
+      description     = "DEV K8S Worker VM managed by Terraform"
       clone = {
         vm_id = 8052
       }
@@ -73,9 +73,9 @@ locals {
   }
 
   nodes = {
-    "k8s-dev-master1" = { type = "master", vm_id = 691, ip = "172.16.3.191/24" }
-    "k8s-dev-worker1" = { type = "worker", vm_id = 692, ip = "172.16.3.192/24" }
-    "k8s-dev-worker2" = { type = "worker", vm_id = 693, ip = "172.16.3.193/24" }
+    "k8s-dev-master1" = { type = "master", vm_id = 221, ip = "172.16.3.221/23" }
+    "k8s-dev-worker1" = { type = "worker", vm_id = 222, ip = "172.16.3.222/23" }
+    "k8s-dev-worker2" = { type = "worker", vm_id = 223, ip = "172.16.3.223/23" }
   }
 
   node_configs = {

@@ -18,7 +18,7 @@ locals {
       additional_disks = [
         {
           interface   = "virtio1"
-          size        = 120
+          size        = 150
         }
       ]
     }
@@ -42,7 +42,7 @@ locals {
   }
 
   nodes = {
-    "nfs-server" = { type = "nfs", vm_id = 140, ip = "172.16.3.140/24" }
+    "prod-nfs" = { type = "nfs", vm_id = 140, ip = "172.16.3.140/24" }
   }
 
   node_configs = {

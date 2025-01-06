@@ -1,8 +1,8 @@
 locals {
   node_defaults = {
-    freeipa = {
-      tags = ["freeipa", "registry", "dev"]
-      description     = "DEV FreeIPA VM managed by Terraform"
+    harbor = {
+      tags = ["harbor", "registry", "prod"]
+      description     = "PROD Harbor VM managed by Terraform"
       clone = {
         vm_id = 8151
       }
@@ -18,7 +18,7 @@ locals {
       additional_disks = [
         {
           interface   = "virtio1"
-          size        = 40
+          size        = 150
         }
       ]
     }
@@ -42,7 +42,7 @@ locals {
   }
 
   nodes = {
-    "dev-freeipa" = { type = "freeipa", vm_id = 210, ip = "172.16.3.210/23" }
+    "prod-harbor" = { type = "harbor", vm_id = 112, ip = "172.16.3.112/23" }
   }
 
   node_configs = {
@@ -56,5 +56,5 @@ locals {
     )
   }
 
-  freeipa_nodes = [for name, config in local.node_configs : config if contains(config.tags, "freeipa")]
+  harbor_nodes = [for name, config in local.node_configs : config if contains(config.tags, "harbor")]
 }

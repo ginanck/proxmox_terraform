@@ -8,7 +8,7 @@ locals {
       }
 
       cpu = {
-        cores = 2
+        cores = 4
       }
 
       memory = {
@@ -18,7 +18,7 @@ locals {
       additional_disks = [
         {
           interface   = "virtio1"
-          size        = 40
+          size        = 60
         }
       ]
 
@@ -53,8 +53,8 @@ locals {
   }
 
   nodes = {
-    "k8s-prod-haproxy1" = { type = "haproxy", vm_id = 130, ip = "172.16.2.130/24" }
-    "k8s-prod-haproxy2" = { type = "haproxy", vm_id = 131, ip = "172.16.2.131/24" }
+    "prod-haproxy1" = { type = "haproxy", vm_id = 113, ip = "172.16.2.113/24" }
+    "prod-haproxy2" = { type = "haproxy", vm_id = 114, ip = "172.16.2.114/24" }
   }
 
   node_configs = {

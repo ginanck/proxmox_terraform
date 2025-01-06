@@ -1,8 +1,8 @@
 locals {
   node_defaults = {
-    freeipa = {
-      tags = ["freeipa", "registry", "dev"]
-      description     = "DEV FreeIPA VM managed by Terraform"
+    master = {
+      tags = ["master", "jenkins", "prod"]
+      description     = "PROD Jenkins Master VM managed by Terraform"
       clone = {
         vm_id = 8151
       }
@@ -18,7 +18,7 @@ locals {
       additional_disks = [
         {
           interface   = "virtio1"
-          size        = 40
+          size        = 120
         }
       ]
     }
@@ -42,7 +42,7 @@ locals {
   }
 
   nodes = {
-    "dev-freeipa" = { type = "freeipa", vm_id = 210, ip = "172.16.3.210/23" }
+    "prod-jenkins" = { type = "master", vm_id = 211, ip = "172.16.3.211/23" }
   }
 
   node_configs = {
@@ -56,5 +56,5 @@ locals {
     )
   }
 
-  freeipa_nodes = [for name, config in local.node_configs : config if contains(config.tags, "freeipa")]
+  master_nodes = [for name, config in local.node_configs : config if contains(config.tags, "master")]
 }

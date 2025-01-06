@@ -1,8 +1,8 @@
 locals {
   node_defaults = {
     freeipa = {
-      tags = ["freeipa", "registry", "dev"]
-      description     = "DEV FreeIPA VM managed by Terraform"
+      tags = ["freeipa", "registry", "prod"]
+      description     = "PROD FreeIPA VM managed by Terraform"
       clone = {
         vm_id = 8151
       }
@@ -18,7 +18,7 @@ locals {
       additional_disks = [
         {
           interface   = "virtio1"
-          size        = 40
+          size        = 120
         }
       ]
     }
@@ -42,7 +42,7 @@ locals {
   }
 
   nodes = {
-    "dev-freeipa" = { type = "freeipa", vm_id = 210, ip = "172.16.3.210/23" }
+    "prod-freeipa" = { type = "freeipa", vm_id = 110, ip = "172.16.3.110/23" }
   }
 
   node_configs = {

@@ -8,7 +8,7 @@ locals {
       }
 
       cpu = {
-        cores = 4
+        cores = 2
       }
 
       memory = {
@@ -18,7 +18,7 @@ locals {
       additional_disks = [
         {
           interface   = "virtio1"
-          size        = 120
+          size        = 40
         }
       ]
     }
@@ -42,7 +42,7 @@ locals {
   }
 
   nodes = {
-    "jenkins-master" = { type = "master", vm_id = 111, ip = "172.16.3.111/24" }
+    "dev-jenkins" = { type = "master", vm_id = 211, ip = "172.16.3.211/23" }
   }
 
   node_configs = {

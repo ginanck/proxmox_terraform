@@ -1,18 +1,18 @@
 locals {
   node_defaults = {
-    freeipa = {
-      tags = ["freeipa", "registry", "dev"]
-      description     = "DEV FreeIPA VM managed by Terraform"
+    nfs = {
+      tags = ["nfs", "storage", "prod"]
+      description     = "DEV NFS Server VM managed by Terraform"
       clone = {
-        vm_id = 8151
+        vm_id = 8150
       }
 
       cpu = {
-        cores = 4
+        cores = 2
       }
 
       memory = {
-        dedicated = 8192
+        dedicated = 2048
       }
 
       additional_disks = [
@@ -42,7 +42,7 @@ locals {
   }
 
   nodes = {
-    "dev-freeipa" = { type = "freeipa", vm_id = 210, ip = "172.16.3.210/23" }
+    "dev-nfs" = { type = "nfs", vm_id = 214, ip = "172.16.3.214/24" }
   }
 
   node_configs = {
@@ -56,5 +56,5 @@ locals {
     )
   }
 
-  freeipa_nodes = [for name, config in local.node_configs : config if contains(config.tags, "freeipa")]
+  nfs_nodes = [for name, config in local.node_configs : config if contains(config.tags, "nfs")]
 }

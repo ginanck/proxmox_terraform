@@ -8,7 +8,7 @@ locals {
       }
 
       cpu = {
-        cores = 4
+        cores = 2
       }
 
       memory = {
@@ -18,7 +18,7 @@ locals {
       additional_disks = [
         {
           interface   = "virtio1"
-          size        = 120
+          size        = 40
         }
       ]
     }
@@ -42,7 +42,7 @@ locals {
   }
 
   nodes = {
-    "harbor" = { type = "harbor", vm_id = 112, ip = "172.16.3.112/24" }
+    "dev-harbor" = { type = "harbor", vm_id = 212, ip = "172.16.3.212/23" }
   }
 
   node_configs = {

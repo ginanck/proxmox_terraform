@@ -18,7 +18,7 @@ locals {
       additional_disks = [
         {
           interface   = "virtio1"
-          size        = 40
+          size        = 20
         }
       ]
     }
@@ -42,7 +42,7 @@ locals {
   }
 
   nodes = {
-    "k8s-dev-haproxy1" = { type = "haproxy", vm_id = 681, ip = "172.16.3.181/24" }
+    "dev-haproxy1" = { type = "haproxy", vm_id = 213, ip = "172.16.3.213/23" }
   }
 
   node_configs = {
