@@ -1,9 +1,16 @@
 locals {
   haproxy_config = {
-    name        = "haproxy"
+    name        = "haproxy01"
     description = "HAProxy for K8S LB"
-    vm_id       = 221
-    tags        = ["dev", "k8s", "haproxy"]
+    vm_id       = 271
+    tags        = concat(local.common_config.tags, ["loadbalancer"])
+
+    clone = {
+      datastore_id = "data"
+      full         = true
+      retries      = 3
+      vm_id        = 8150
+    }
 
     cpu = {
       cores      = 2
@@ -38,6 +45,7 @@ locals {
       ip_config = {
         ipv4 = {
           address = "dhcp"
+          gateway = ""
         }
       }
       user_account = local.common_config.user_account

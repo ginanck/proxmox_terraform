@@ -25,15 +25,15 @@ locals {
   # Assemble the complete k8s_worker configuration
   k8s_worker = {
     for key, node in local.worker_nodes : key => {
-      name        = node.name
-      description = local.worker_base.description
-      vm_id       = node.vm_id
-      tags        = local.worker_base.tags
-      cpu         = local.worker_base.cpu
-      memory      = local.worker_base.memory
-      disk        = local.worker_base.disk
-      additional_disks           = local.worker_base.additional_disks
-      network_device             = local.worker_base.network_device
+      name             = node.name
+      description      = local.worker_base.description
+      vm_id            = node.vm_id
+      tags             = local.worker_base.tags
+      cpu              = local.worker_base.cpu
+      memory           = local.worker_base.memory
+      disk             = local.worker_base.disk
+      additional_disks = local.worker_base.additional_disks
+      network_device   = local.worker_base.network_device
 
       initialization = {
         dns = {

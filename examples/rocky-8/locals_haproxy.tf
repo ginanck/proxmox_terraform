@@ -1,14 +1,21 @@
 locals {
-  nginx_config = {
-    name        = "nginx"
-    description = "Nginx for K8S LB"
-    vm_id       = 222
-    tags        = ["dev", "k8s", "nginx"]
+  haproxy_config = {
+    name        = "haproxy01"
+    description = "HAProxy for K8S LB"
+    vm_id       = 271
+    tags        = concat(local.common_config.tags, ["loadbalancer"])
+
+    clone = {
+      datastore_id = "data"
+      full         = true
+      retries      = 3
+      vm_id        = 8150
+    }
 
     cpu = {
       cores      = 2
     }
-    
+
     memory = {
       dedicated      = 2048
       floating       = 1024
@@ -21,7 +28,7 @@ locals {
     network_device = {
       bridge   = "vmbr0"
       model    = "virtio"
-      mac_address = "00:50:56:01:21:F3"
+      mac_address = "00:50:56:01:23:9C"
     }
 
     additional_network_devices = [
@@ -38,6 +45,7 @@ locals {
       ip_config = {
         ipv4 = {
           address = "dhcp"
+          gateway = ""
         }
       }
       user_account = local.common_config.user_account

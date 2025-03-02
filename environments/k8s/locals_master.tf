@@ -18,13 +18,13 @@ locals {
   # Assemble the complete k8s_master configuration
   k8s_master = {
     for key, node in local.master_nodes : key => {
-      name        = node.name
-      description = local.master_base.description
-      vm_id       = node.vm_id
-      tags        = local.master_base.tags
-      cpu         = local.master_base.cpu
-      memory      = local.master_base.memory
-      disk        = local.master_base.disk
+      name            = node.name
+      description     = local.master_base.description
+      vm_id           = node.vm_id
+      tags            = local.master_base.tags
+      cpu             = local.master_base.cpu
+      memory          = local.master_base.memory
+      disk            = local.master_base.disk
       
       initialization = {
         dns = {
