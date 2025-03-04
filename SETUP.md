@@ -4,51 +4,51 @@ This document outlines the resources, configurations, and IP mappings for our de
 
 ## DNS
 
-| Hostname | IP Address   | CPU     | RAM | Storage | Access URL            | VM_ID |
-|----------|--------------|---------|-----|---------|-----------------------|-------|
-| dns01    | 172.16.2.21  | 2 cores | 2GB | 40GB    | https://dns.dev.local | 221   |
+| Hostname  | IP Address   | CPU     | RAM | Storage | Access URL            | VM_ID |
+|-----------|--------------|---------|-----|---------|-----------------------|-------|
+| dns-01    | 172.16.2.21  | 2 cores | 4GB | 40GB    | https://dns.dev.local | 221   |
 
 ## FreeIPA
 
-| Hostname | IP Address  | CPU     | RAM  | Storage | Role      | VM_ID |
-|----------|-------------|---------|------|---------|-----------|-------|
-| ipa01    | 172.16.2.25 | 4 cores | 8GB  | 100GB   | primary   | 225   |
-| ipa02    | 172.16.2.26 | 4 cores | 8GB  | 100GB   | secondary | 226   |
-| ipa03    | 172.16.2.27 | 4 cores | 8GB  | 100GB   | teritary  | 227   |
+| Hostname  | IP Address  | CPU     | RAM  | Storage | Role      | VM_ID |
+|-----------|-------------|---------|------|---------|-----------|-------|
+| ipa-01    | 172.16.2.25 | 4 cores | 8GB  | 100GB   | primary   | 225   |
+| ipa-02    | 172.16.2.26 | 4 cores | 8GB  | 100GB   | secondary | 226   |
+| ipa-03    | 172.16.2.27 | 4 cores | 8GB  | 100GB   | teritary  | 227   |
 
 ## Gitea
 
 | Hostname | IP Address   | CPU     | RAM | Storage | Access URL              | VM_ID |
 |----------|--------------|---------|-----|---------|-------------------------|-------|
-| gitea01  | 172.16.2.31  | 2 cores | 4GB | 40GB    | https://gitea.dev.local | 231   |
+| gitea01  | 172.16.2.31  | 2 cores | 4GB | 200GB    | https://gitea.dev.local | 231   |
 
 ## Harbor
 
 | Hostname | IP Address   | CPU     | RAM | Storage | Access URL               | VM_ID |
 |----------|--------------|---------|-----|---------|--------------------------|-------|
-| harbor   | 172.16.2.35  | 4 cores | 8GB | 200GB   | https://harbor.dev.local | 235   |
+| harbor01 | 172.16.2.35  | 4 cores | 8GB | 200GB   | https://harbor.dev.local | 235   |
 
 ## Jenkins
 
 | Hostname        | IP Address   | CPU     | RAM | Storage | Access URL                | VM_ID |
 |-----------------|--------------|---------|-----|---------|---------------------------|-------|
 | jenkins-master  | 172.16.2.41  | 4 cores | 8GB | 100GB   | https://jenkins.dev.local | 241   |
-| jenkins-slave01 | 172.16.2.42  | 4 cores | 8GB | 100GB   | N/A                       | 242   |
-| jenkins-slave02 | 172.16.2.43  | 4 cores | 8GB | 100GB   | N/A                       | 243   |
+| jenkins-slave01 | 172.16.2.42  | 4 cores | 4GB | 100GB   | N/A                       | 242   |
+| jenkins-slave02 | 172.16.2.43  | 4 cores | 4GB | 100GB   | N/A                       | 243   |
 
 ## PVE Hosts
 
-| Hostname | IP Address  | CPU     | RAM  | Storage0 | Storage1 | Role      | VM_ID |
-|----------|-------------|---------|------|----------|----------|-----------|-------|
-| pve01    | 172.16.2.51 | 4 cores | 16GB | 40GB     | 120GB    | primary   | 251   |
-| pve02    | 172.16.2.52 | 4 cores | 16GB | 40GB     | 120GB    | secondary | 252   |
-| pve03    | 172.16.2.53 | 4 cores | 16GB | 40GB     | 120GB    | tertiary  | 253   |
+| Hostname  | IP Address  | CPU     | RAM | Storage0 | Storage1 | Role      | VM_ID |
+|-----------|-------------|---------|-----|----------|----------|-----------|-------|
+| pve-01    | 172.16.2.51 | 4 cores | 8GB | 40GB     | 120GB    | primary   | 251   |
+| pve-02    | 172.16.2.52 | 4 cores | 8GB | 40GB     | 120GB    | secondary | 252   |
+| pve-03    | 172.16.2.53 | 4 cores | 8GB | 40GB     | 120GB    | tertiary  | 253   |
 
 ## NFS Server
 
-| Hostname   | IP Address   | CPU     | RAM | Storage | VM_ID |
-|------------|--------------|---------|-----|---------|-------|
-| nfs-server | 172.16.2.61  | 2 cores | 4GB | 200GB   | 261   |
+| Hostname      | IP Address   | CPU     | RAM | Storage | VM_ID |
+|---------------|--------------|---------|-----|---------|-------|
+| nfs-server-01 | 172.16.2.61  | 2 cores | 4GB | 200GB   | 261   |
 
 Exports List;
 - /exports/k8s
@@ -59,7 +59,6 @@ Exports List;
 | Hostname  | IP Address  | CPU     | RAM  | Storage0 | Role      | VM_ID |
 |-----------|-------------|---------|------|----------|-----------|-------|
 | haproxy01 | 172.16.2.71 | 2 cores | 2GB  | 40GB     | primary   | 271   |
-| haproxy02 | 172.16.2.72 | 2 cores | 2GB  | 40GB     | secondary | 272   |
 
 ## NGinx
 

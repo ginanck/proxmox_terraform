@@ -1,30 +1,45 @@
 locals {
   # Master-specific base configuration
   master_base = {
-    description = "master for K8S"
+    description = "master for jenkins"
     tags        = concat(local.common_config.tags, ["master"])
-    cpu         = { cores = 2 }
-    memory      = { dedicated = 2048, floating = 1024 }
-    disk        = { size = 60 }
+
+    clone = {
+      datastore_id = "data"
+      full         = true
+      retries      = 3
+      vm_id        = 8150
+    }
+
+    cpu         = { cores = 8 }
+    memory      = { dedicated = 8192, floating = 1024 }
+    disk        = { size = 20 }
+    additional_disks = [
+      { size = 100, interface = "virtio1" }
+    ]
+    network_device = {
+      bridge   = "vmbr1"
+      model    = "virtio"
+    }
   }
 
   # Define the individual master nodes with just the unique properties
   master_nodes = {
-    "k8s-master01" = { name = "master01", vm_id = 225, ip_address = "172.16.3.225/23" }
-    "k8s-master02" = { name = "master02", vm_id = 226, ip_address = "172.16.3.226/23" }
-    "k8s-master03" = { name = "master03", vm_id = 227, ip_address = "172.16.3.227/23" }
+    "jenkins-master" = { name = "jenkins-master", vm_id = 241, ip_address = "172.16.2.41/23" }
   }
 
-  # Assemble the complete k8s_master configuration
-  k8s_master = {
+  # Assemble the complete jenkins_master configuration
+  jenkins_master = {
     for key, node in local.master_nodes : key => {
       name            = node.name
-      description     = local.master_base.description
       vm_id           = node.vm_id
+      description     = local.master_base.description
       tags            = local.master_base.tags
+      clone           = local.master_base.clone
       cpu             = local.master_base.cpu
       memory          = local.master_base.memory
       disk            = local.master_base.disk
+      network_device  = local.master_base.network_device
       
       initialization = {
         dns = {

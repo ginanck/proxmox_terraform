@@ -3,8 +3,16 @@ locals {
   worker_base = {
     description = "worker for K8S"
     tags        = concat(local.common_config.tags, ["worker"])
+
+    clone = {
+      datastore_id = "data"
+      full         = true
+      retries      = 3
+      vm_id        = 8150
+    }
+
     cpu         = { cores = 4 }
-    memory      = { dedicated = 4096, floating = 2048 }
+    memory      = { dedicated = 8192, floating = 2048 }
     disk        = { size = 40 }
     additional_disks = [
       { size = 120, interface = "virtio1" }
@@ -17,18 +25,18 @@ locals {
 
   # Define the individual worker nodes
   worker_nodes = {
-    "k8s-worker01" = { name = "worker01", vm_id = 231, ip_address = "172.16.3.231/23" }
-    "k8s-worker02" = { name = "worker02", vm_id = 232, ip_address = "172.16.3.232/23" }
-    "k8s-worker03" = { name = "worker03", vm_id = 233, ip_address = "172.16.3.233/23" }
+    "k8s-worker01" = { name = "k8s-worker01", vm_id = 311, ip_address = "172.16.3.111/23" }
+    "k8s-worker02" = { name = "k8s-worker02", vm_id = 312, ip_address = "172.16.3.112/23" }
   }
 
   # Assemble the complete k8s_worker configuration
   k8s_worker = {
     for key, node in local.worker_nodes : key => {
       name             = node.name
-      description      = local.worker_base.description
       vm_id            = node.vm_id
+      description      = local.worker_base.description
       tags             = local.worker_base.tags
+      clone            = local.worker_base.clone
       cpu              = local.worker_base.cpu
       memory           = local.worker_base.memory
       disk             = local.worker_base.disk

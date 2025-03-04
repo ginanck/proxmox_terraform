@@ -1,5 +1,5 @@
 module "k8s_master" {
-  source   = "../../../base"
+  source   = "../../base"
   providers = {
     proxmox = proxmox
   }
@@ -9,7 +9,7 @@ module "k8s_master" {
 }
 
 module "k8s_worker" {
-  source   = "../../../base"
+  source   = "../../base"
   providers = {
     proxmox = proxmox
   }

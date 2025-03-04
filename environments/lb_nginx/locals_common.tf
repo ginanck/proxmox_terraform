@@ -1,14 +1,15 @@
 locals {
   common_config = {
     interfaces = {
-      vmbr0_iface   = "ens18"
-      vmbr0_ip      = "65.109.108.152"
-      vmbr0_mac     = "00:50:56:01:21:F3"
-      vmbr1_iface   = "ens19"
-      vmbr1_ip      = "172.16.2.81"
-      vmbr1_netmask = "23"
-      vmbr1_gateway = "172.16.2.1"
-      vmbr1_subnet  = "172.16.2.0/23"
+      vmbr0_iface     = "eth0"
+      vmbr0_iface_new = "ens18"
+      vmbr0_ip        = "65.109.108.152"
+      vmbr0_mac       = "00:50:56:01:21:F3"
+      vmbr1_iface     = "ens19"
+      vmbr1_ip        = "172.16.2.81"
+      vmbr1_netmask   = "23"
+      vmbr1_gateway   = "172.16.2.1"
+      vmbr1_subnet    = "172.16.2.0/23"
     }
     dns_servers = [
       "8.8.8.8",

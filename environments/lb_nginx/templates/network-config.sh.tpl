@@ -11,7 +11,7 @@ network:
       dhcp4: true
       match:
         macaddress: ${ens18_mac}
-      set-name: ${ens18_iface}
+      set-name: ${ens18_iface_new}
     ${ens19_iface}:
       dhcp4: false
       addresses:
