@@ -7,18 +7,18 @@ module "nginx" {
   vm = local.nginx_config
 }
 
+
 resource "local_file" "config_script" {
   content = templatefile("${path.module}/templates/network-config.sh.tpl", {
     dns_servers = join(", ", local.common_config.dns_servers)
-    ens18_iface     = local.common_config.interfaces.vmbr0_iface
-    ens18_iface_new = local.common_config.interfaces.vmbr0_iface_new
-    ens18_ip        = local.common_config.interfaces.vmbr0_ip
-    ens18_mac       = local.common_config.interfaces.vmbr0_mac
-    ens19_iface     = local.common_config.interfaces.vmbr1_iface
-    ens19_ip        = local.common_config.interfaces.vmbr1_ip
-    ens19_gateway   = local.common_config.interfaces.vmbr1_gateway
-    ens19_netmask   = local.common_config.interfaces.vmbr1_netmask
-    ens19_subnet    = local.common_config.interfaces.vmbr1_subnet
+    ens18_iface   = local.common_config.interfaces.vmbr0_iface
+    ens18_ip      = local.common_config.interfaces.vmbr0_ip
+    ens18_mac     = local.common_config.interfaces.vmbr0_mac
+    ens19_iface   = local.common_config.interfaces.vmbr1_iface
+    ens19_ip      = local.common_config.interfaces.vmbr1_ip
+    ens19_netmask = local.common_config.interfaces.vmbr1_netmask
+    ens19_gateway = local.common_config.interfaces.vmbr1_gateway
+    ens19_subnet  = local.common_config.interfaces.vmbr1_subnet
   })
   filename = "${path.module}/network-config.sh"
   file_permission = "0755"
@@ -54,11 +54,11 @@ resource "null_resource" "post_deployment_configuration" {
   provisioner "file" {
     source      = local_file.config_script.filename
     destination = "/tmp/network-config.sh"
-    
+  
     connection {
       type        = "ssh"
       user        = local.common_config.user_account.username
-      password    = local.common_config.user_account.password
+      private_key = file("~/.ssh/id_ansible")
       host        = local.common_config.interfaces.vmbr0_ip
     }
   }
@@ -72,7 +72,7 @@ resource "null_resource" "post_deployment_configuration" {
     connection {
       type        = "ssh"
       user        = local.common_config.user_account.username
-      password    = local.common_config.user_account.password
+      private_key = file("~/.ssh/id_ansible")
       host        = local.common_config.interfaces.vmbr0_ip
     }
   }

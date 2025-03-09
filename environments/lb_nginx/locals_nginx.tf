@@ -9,7 +9,7 @@ locals {
       datastore_id = "data"
       full         = true
       retries      = 3
-      vm_id        = 8052
+      vm_id        = 8150
     }
 
     cpu = {
@@ -28,7 +28,7 @@ locals {
     network_device = {
       bridge   = "vmbr0"
       model    = "virtio"
-      mac_address = "00:50:56:01:21:F3"
+      mac_address = local.common_config.interfaces.vmbr0_mac
     }
 
     additional_network_devices = [

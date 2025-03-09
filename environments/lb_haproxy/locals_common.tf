@@ -10,7 +10,10 @@ locals {
       vmbr1_gateway = "172.16.2.1"
       vmbr1_subnet  = "172.16.2.0/23"
     }
-    dns_servers = ["8.8.8.8", "8.8.4.4"]
+    dns_servers = [
+      "8.8.8.8",
+      "8.8.4.4"
+    ]
     user_account = {
       keys     = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmaSIzwHMrS7/nfYreiGrPfujrvABwnmODooaaIy66u ansible@gkorkmaz",

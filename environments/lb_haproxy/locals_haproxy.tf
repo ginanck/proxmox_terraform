@@ -28,7 +28,7 @@ locals {
     network_device = {
       bridge   = "vmbr0"
       model    = "virtio"
-      mac_address = "00:50:56:01:23:9C"
+      mac_address = local.common_config.interfaces.vmbr0_mac
     }
 
     additional_network_devices = [
@@ -39,8 +39,8 @@ locals {
     ]
 
     initialization = {
-      dns = {
-        servers = ["8.8.8.8", "8.8.4.4"]
+      dns = { 
+        servers = local.common_config.dns_servers
       }
       ip_config = {
         ipv4 = {
