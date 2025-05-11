@@ -1,4 +1,4 @@
-module "haproxy" {
+module "nfs_server" {
   source = "../../base"
   providers = {
     proxmox = proxmox
