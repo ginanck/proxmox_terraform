@@ -25,7 +25,7 @@ locals {
 
   # Define the individual master nodes with just the unique properties
   master_nodes = {
-    "jenkins-master" = { name = "jenkins-master", vm_id = 241, ip_address = "172.16.2.41/23" }
+    "jenkins-master" = { name = "172.16.2.41-jenkins-master", vm_id = 241, ip_address = "172.16.2.41/23" }
   }
 
   # Assemble the complete jenkins_master configuration

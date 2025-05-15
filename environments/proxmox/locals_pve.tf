@@ -26,9 +26,9 @@ locals {
 
   # Define the individual pve- nodes with just the unique properties
   pve_nodes = {
-    "pve-node-01" = { name = "pve-01", vm_id = 251, ip_address = "172.16.3.51/23" }
-    "pve-node-02" = { name = "pve-02", vm_id = 252, ip_address = "172.16.3.52/23" }
-    "pve-node-03" = { name = "pve-03", vm_id = 253, ip_address = "172.16.3.53/23" }
+    "pve-node-01" = { name = "172.16.3.51-pve-01", vm_id = 251, ip_address = "172.16.3.51/23" }
+    "pve-node-02" = { name = "172.16.3.52-pve-02", vm_id = 252, ip_address = "172.16.3.52/23" }
+    "pve-node-03" = { name = "172.16.3.53-pve-03", vm_id = 253, ip_address = "172.16.3.53/23" }
   }
 
   # Assemble the complete k8s_pve- configuration

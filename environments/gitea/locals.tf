@@ -17,7 +17,7 @@ locals {
   }
 
   gitea_config = {
-    name        = "gitea01"
+    name        = "172.16.2.31-gitea"
     description = "gitea for K8S LB"
     vm_id       = 231
     tags        = concat(local.common_config.tags, ["scm"])

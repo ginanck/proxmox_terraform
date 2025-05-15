@@ -17,7 +17,7 @@ locals {
   }
 
   dns_config = {
-    name        = "dns-01"
+    name        = "172.16.2.21-dns"
     description = "dns for lab setup"
     vm_id       = 221
     tags        = concat(local.common_config.tags, ["dns"])

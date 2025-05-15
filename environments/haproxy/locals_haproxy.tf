@@ -1,6 +1,6 @@
 locals {
   haproxy_config = {
-    name        = "haproxy01"
+    name        = "172.16.2.71-haproxy"
     description = "HAProxy for K8S LB"
     vm_id       = 271
     tags        = concat(local.common_config.tags, ["loadbalancer"])

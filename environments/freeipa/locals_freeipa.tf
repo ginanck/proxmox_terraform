@@ -26,9 +26,9 @@ locals {
 
   # Define the individual ipa-nodes with just the unique properties
   ipa_nodes = {
-    "ipa-node-01" = { name = "ipa-01", vm_id = 225, ip_address = "172.16.2.25/23" }
-    "ipa-node-02" = { name = "ipa-02", vm_id = 226, ip_address = "172.16.3.26/23" }
-    "ipa-node-03" = { name = "ipa-03", vm_id = 227, ip_address = "172.16.3.27/23" }
+    "ipa-node-01" = { name = "172.16.2.25-ipa-01", vm_id = 225, ip_address = "172.16.2.25/23" }
+    "ipa-node-02" = { name = "172.16.3.26-ipa-02", vm_id = 226, ip_address = "172.16.3.26/23" }
+    "ipa-node-03" = { name = "172.16.3.27-ipa-03", vm_id = 227, ip_address = "172.16.3.27/23" }
   }
 
   # Assemble the complete freeipa configuration
