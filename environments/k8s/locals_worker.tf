@@ -8,7 +8,7 @@ locals {
       datastore_id = "data"
       full         = true
       retries      = 3
-      vm_id        = 8150
+      vm_id        = 8052
     }
 
     cpu         = { cores = 4 }
