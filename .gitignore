@@ -14,5 +14,3 @@ Thumbs.db
 terraform.lock.*
 terraform.tfstate
 terraform.tfstate.*
-*network-config.sh
-network-config.sh*
