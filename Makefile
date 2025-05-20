@@ -7,13 +7,13 @@ ifndef COMPONENT
 endif
 
 init: check_component
-	cd environments/$(COMPONENT) && terraform init
+	cd environments/$(COMPONENT) && tofu init
 
 plan: check_component
-	cd environments/$(COMPONENT) && terraform plan
+	cd environments/$(COMPONENT) && tofu plan
 
 apply: check_component
-	cd environments/$(COMPONENT) && terraform apply -auto-approve
+	cd environments/$(COMPONENT) && tofu apply -auto-approve
 
 destroy: check_component
-	cd environments/$(COMPONENT) && terraform destroy -auto-approve
+	cd environments/$(COMPONENT) && tofu destroy -auto-approve
