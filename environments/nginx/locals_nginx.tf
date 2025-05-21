@@ -26,17 +26,9 @@ locals {
     }
 
     network_device = {
-      bridge   = "vmbr0"
+      bridge   = "vmbr1"
       model    = "virtio"
-      mac_address = local.common_config.interfaces.vmbr0_mac
     }
-
-    additional_network_devices = [
-      {
-        bridge      = "vmbr1"
-        model       = "virtio"
-      }
-    ]
 
     initialization = {
       dns = { 
@@ -44,8 +36,8 @@ locals {
       }
       ip_config = {
         ipv4 = {
-          address = "dhcp"
-          gateway = ""
+          address = local.common_config.interfaces.vmbr1_ip
+          gateway = local.common_config.interfaces.vmbr1_gateway
         }
       }
       user_account = local.common_config.user_account
