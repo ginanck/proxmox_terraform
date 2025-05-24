@@ -12,7 +12,7 @@ locals {
     }
 
     cpu         = { cores = 2 }
-    memory      = { dedicated = 4096, floating = 1024 }
+    memory      = { dedicated = 4096, floating = 2048 }
     disk        = { size = 40 }
     network_device = {
       bridge   = "vmbr1"

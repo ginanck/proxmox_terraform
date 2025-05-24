@@ -12,11 +12,13 @@ locals {
     }
 
     cpu         = { cores = 4 }
-    memory      = { dedicated = 8192, floating = 2048 }
+    memory      = { dedicated = 12288, floating = 8192 }
     disk        = { size = 40 }
+
     additional_disks = [
-      { size = 120, interface = "virtio1" }
+      { size = 150, interface = "virtio1" }
     ]
+
     network_device = {
       bridge   = "vmbr1"
       model    = "virtio"
