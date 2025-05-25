@@ -12,7 +12,7 @@ locals {
     }
 
     cpu         = { cores = 4 }
-    memory      = { dedicated = 10240, floating = 8192 }
+    memory      = { dedicated = 4096, floating = 2048 }
     disk        = { size = 40 }
 
     additional_disks = [
@@ -28,7 +28,6 @@ locals {
   # Define the individual worker nodes
   worker_nodes = {
     "k8s-worker01" = { name = "172.16.3.111-worker-01", vm_id = 311, ip_address = "172.16.3.111/23" }
-    "k8s-worker02" = { name = "172.16.3.112-worker-02", vm_id = 312, ip_address = "172.16.3.112/23" }
   }
 
   # Assemble the complete k8s_worker configuration
@@ -59,4 +58,39 @@ locals {
       }
     }
   }
+
+  # Disk resize script
+  disk_resize_script_worker = <<-EOF
+    #!/bin/bash
+    set -e
+
+    echo "Starting disk resize process..."
+
+    # Wait for system to be ready
+    sleep 10
+
+    # Check current disk state
+    echo "Current disk state:"
+    lsblk
+    df -h
+    pvs
+
+    # Resize partition 3 (LVM partition)
+    echo "Resizing partition..."
+    growpart /dev/vda 3
+
+    # Resize physical volume
+    echo "Resizing physical volume..."
+    pvresize /dev/vda3
+
+    # Show final state
+    echo "Final disk state:"
+    lsblk
+    df -h
+    pvs
+    vgs
+    lvs
+
+    echo "Disk resize completed successfully!"
+  EOF
 }

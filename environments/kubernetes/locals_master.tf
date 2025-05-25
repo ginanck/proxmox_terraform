@@ -14,6 +14,11 @@ locals {
     cpu         = { cores = 2 }
     memory      = { dedicated = 4096, floating = 2048 }
     disk        = { size = 40 }
+
+    additional_disks = [
+      { size = 100, interface = "virtio1" }
+    ]
+
     network_device = {
       bridge   = "vmbr1"
       model    = "virtio"
@@ -36,8 +41,9 @@ locals {
       cpu             = local.master_base.cpu
       memory          = local.master_base.memory
       disk            = local.master_base.disk
+      additional_disks = local.master_base.additional_disks
       network_device  = local.master_base.network_device
-      
+
       initialization = {
         dns = {
           servers = local.common_config.dns_servers
@@ -52,4 +58,39 @@ locals {
       }
     }
   }
+
+  # Disk resize script
+  disk_resize_script_master = <<-EOF
+    #!/bin/bash
+    set -e
+
+    echo "Starting disk resize process..."
+
+    # Wait for system to be ready
+    sleep 10
+
+    # Check current disk state
+    echo "Current disk state:"
+    lsblk
+    df -h
+    pvs
+
+    # Resize partition 2 (LVM partition)
+    echo "Resizing partition..."
+    growpart /dev/vda 2
+
+    # Resize physical volume
+    echo "Resizing physical volume..."
+    pvresize /dev/vda2
+
+    # Show final state
+    echo "Final disk state:"
+    lsblk
+    df -h
+    pvs
+    vgs
+    lvs
+
+    echo "Disk resize completed successfully!"
+  EOF
 }
