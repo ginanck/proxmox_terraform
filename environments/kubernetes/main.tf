@@ -23,7 +23,7 @@ resource "null_resource" "disk_resize_master" {
     type        = "ssh"
     host        = split("/", each.value.initialization.ip_config.ipv4.address)[0]
     user        = each.value.initialization.user_account.username
-    private_key = file("~/.ssh/id_ansible") # Adjust path to your private key
+    private_key = file("~/.ssh/id_ansible")
     timeout     = "5m"
   }
 
@@ -42,6 +42,7 @@ resource "null_resource" "disk_resize_master" {
     ]
   }
 }
+
 
 
 module "k8s_worker" {
@@ -69,7 +70,7 @@ resource "null_resource" "disk_resize_worker" {
     type        = "ssh"
     host        = split("/", each.value.initialization.ip_config.ipv4.address)[0]
     user        = each.value.initialization.user_account.username
-    private_key = file("~/.ssh/id_ansible") # Adjust path to your private key
+    private_key = file("~/.ssh/id_ansible")
     timeout     = "5m"
   }
 
