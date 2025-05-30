@@ -21,6 +21,7 @@ locals {
     description = "smallstep dns server for lab setup"
     vm_id       = 220
     tags        = concat(local.common_config.tags, ["smallstep"])
+    protection  = true
 
     clone = {
       datastore_id = "data"

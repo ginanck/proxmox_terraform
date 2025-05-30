@@ -21,6 +21,7 @@ locals {
     description = "technitium dns server for lab setup"
     vm_id       = 221
     tags        = concat(local.common_config.tags, ["technitium"])
+    protection  = true
 
     clone = {
       datastore_id = "data"
