@@ -64,47 +64,4 @@ locals {
       user_account = local.common_config.user_account
     }
   }
-
-  # Improved disk resize script
-  disk_resize_script = <<-EOF
-    #!/bin/bash
-    set -e
-
-    echo "Starting disk resize process..."
-
-    # Wait for system to be ready
-    sleep 10
-
-    # Check current disk state
-    echo "Current disk state:"
-    lsblk
-    df -h
-    pvs
-
-    # Check if partition 3 can be grown
-    echo "Checking if partition can be grown..."
-    if growpart --dry-run /dev/vda 3 2>/dev/null; then
-      echo "Partition can be grown, proceeding with resize..."
-      
-      # Resize partition 3 (LVM partition)
-      echo "Resizing partition..."
-      growpart /dev/vda 3
-
-      # Resize physical volume
-      echo "Resizing physical volume..."
-      pvresize /dev/vda3
-    else
-      echo "Partition is already at maximum size or cannot be grown."
-    fi
-
-    # Show final state
-    echo "Final disk state:"
-    lsblk
-    df -h
-    pvs
-    vgs
-    lvs
-
-    echo "Disk resize completed successfully!"
-  EOF
 }
