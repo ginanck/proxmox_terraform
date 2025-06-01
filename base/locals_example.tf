@@ -5,7 +5,7 @@ locals {
     description     = "Test VM managed by Terraform"
     node_name       = "oxygen"
     vm_id           = 110
-    
+
     # VM behavior settings
     acpi            = true
     bios            = "seabios"
@@ -18,13 +18,13 @@ locals {
     stop_on_destroy = false
     tablet_device   = true
     template        = false
-    
+
     # Hardware settings
     scsi_hardware   = "virtio-scsi-pci"
-    
+
     # Tags
     tags            = ["terraform-managed"]
-    
+
     # Timeouts
     timeouts = {
       clone       = 1800
@@ -35,7 +35,7 @@ locals {
       start_vm    = 1800
       stop_vm     = 300
     }
-    
+
     # Clone settings
     clone = {
       datastore_id = "data"
@@ -54,7 +54,7 @@ locals {
       type       = "host"
       units      = 1024
     }
-    
+
     # Memory configuration
     memory = {
       dedicated      = 2048
@@ -62,7 +62,7 @@ locals {
       keep_hugepages = false
       shared         = 0
     }
-    
+
     # Primary disk
     disk = {
       aio          = "io_uring"
@@ -77,7 +77,7 @@ locals {
       size         = 20
       ssd          = false
     }
-    
+
     # Additional disks
     additional_disks = [
       {
@@ -101,7 +101,7 @@ locals {
         iothread     = true
       }
     ]
-    
+
     # Primary network device
     network_device = {
       bridge      = "vmbr1"
@@ -114,7 +114,7 @@ locals {
       rate_limit  = 0
       vlan_id     = 0
     }
-    
+
     # Additional network devices
     additional_network_devices = [
       {
