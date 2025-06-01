@@ -1,11 +1,25 @@
 locals {
+  server_instance = "152"
+  selected_interface = local.server_instance == "143" ? local.common_config.interfaces_143 : local.common_config.interfaces_152
+  selected_ip = split("/", local.selected_interface.vmbr0_ip)[0]
+
   common_config = {
-    interfaces = {
-      vmbr1_ip      = "65.109.108.152/26"
-      vmbr1_mac     = "00:50:56:01:21:F3"
-      vmbr1_gateway = "65.109.108.129"
-    }
     dns_servers = ["8.8.8.8", "8.8.4.4"]
+
+    interfaces = {
+      vmbr0_gateway = "65.109.108.129"
+    }
+
+    interfaces_143 = {
+      vmbr0_mac     = "00:50:56:01:23:9C"
+      vmbr0_ip      = "65.109.108.143/26"
+    }
+
+    interfaces_152 = {
+      vmbr0_mac     = "00:50:56:01:21:F3"
+      vmbr0_ip      = "65.109.108.152/26"
+    }
+
     user_account = {
       keys     = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmaSIzwHMrS7/nfYreiGrPfujrvABwnmODooaaIy66u ansible@gkorkmaz",
@@ -18,7 +32,7 @@ locals {
   }
 
   posteio_config = {
-    name        = "65.109.108.152-posteio"
+    name        = "${local.selected_ip}-posteio"
     description = "Poste.io Dockerized Email Server"
     vm_id       = 102
     tags        = concat(local.common_config.tags, ["posteio"])
@@ -50,6 +64,7 @@ locals {
     network_device = {
       bridge   = "vmbr0"
       model    = "virtio"
+      mac_address = local.selected_interface.vmbr0_mac
     }
 
     initialization = {
@@ -58,9 +73,8 @@ locals {
       }
       ip_config = {
         ipv4 = {
-          address     = local.common_config.interfaces.vmbr1_ip
-          mac_address = local.common_config.interfaces.vmbr1_mac
-          gateway     = local.common_config.interfaces.vmbr1_gateway
+          address     = local.selected_interface.vmbr0_ip
+          gateway     = local.common_config.interfaces.vmbr0_gateway
         }
       }
       user_account = local.common_config.user_account
