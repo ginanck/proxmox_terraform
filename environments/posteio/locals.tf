@@ -1,5 +1,5 @@
 locals {
-  server_instance = "152"
+  server_instance = "143"
   selected_interface = local.server_instance == "143" ? local.common_config.interfaces_143 : local.common_config.interfaces_152
   selected_ip = split("/", local.selected_interface.vmbr0_ip)[0]
 
