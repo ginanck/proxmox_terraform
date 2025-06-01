@@ -11,7 +11,7 @@ locals {
       vm_id        = 8101
     }
 
-    cpu         = { cores = 2 }
+    cpu         = { cores = 4 }
     memory      = { dedicated = 4096, floating = 1024 }
     disk        = { size = 40 }
 
@@ -58,39 +58,4 @@ locals {
       }
     }
   }
-
-  # Disk resize script
-  disk_resize_script_master = <<-EOF
-    #!/bin/bash
-    set -e
-
-    echo "Starting disk resize process..."
-
-    # Wait for system to be ready
-    sleep 10
-
-    # Check current disk state
-    echo "Current disk state:"
-    lsblk
-    df -h
-    pvs
-
-    # Resize partition 2 (LVM partition)
-    echo "Resizing partition..."
-    growpart /dev/vda 2
-
-    # Resize physical volume
-    echo "Resizing physical volume..."
-    pvresize /dev/vda2
-
-    # Show final state
-    echo "Final disk state:"
-    lsblk
-    df -h
-    pvs
-    vgs
-    lvs
-
-    echo "Disk resize completed successfully!"
-  EOF
 }

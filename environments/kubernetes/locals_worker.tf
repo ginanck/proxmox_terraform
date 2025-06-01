@@ -16,7 +16,7 @@ locals {
     disk        = { size = 40 }
 
     additional_disks = [
-      { size = 150, interface = "virtio1" }
+      { size = 200, interface = "virtio1" }
     ]
 
     network_device = {
@@ -59,39 +59,4 @@ locals {
       }
     }
   }
-
-  # Disk resize script
-  disk_resize_script_worker = <<-EOF
-    #!/bin/bash
-    set -e
-
-    echo "Starting disk resize process..."
-
-    # Wait for system to be ready
-    sleep 10
-
-    # Check current disk state
-    echo "Current disk state:"
-    lsblk
-    df -h
-    pvs
-
-    # Resize partition 3 (LVM partition)
-    echo "Resizing partition..."
-    growpart /dev/vda 3
-
-    # Resize physical volume
-    echo "Resizing physical volume..."
-    pvresize /dev/vda3
-
-    # Show final state
-    echo "Final disk state:"
-    lsblk
-    df -h
-    pvs
-    vgs
-    lvs
-
-    echo "Disk resize completed successfully!"
-  EOF
 }
