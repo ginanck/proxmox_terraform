@@ -11,12 +11,17 @@ locals {
       vm_id        = 8150
     }
 
-    cpu         = { cores = 8 }
-    memory      = { dedicated = 8192, floating = 1024 }
-    disk        = { size = 20 }
+    cpu         = { cores = 4 }
+    memory      = { dedicated = 6144 }
+
+    disk = {
+      size = 20
+    }
+
     additional_disks = [
       { size = 100, interface = "virtio1" }
     ]
+
     network_device = {
       bridge   = "vmbr1"
       model    = "virtio"
@@ -39,8 +44,9 @@ locals {
       cpu             = local.master_base.cpu
       memory          = local.master_base.memory
       disk            = local.master_base.disk
+      additional_disks = local.master_base.additional_disks
       network_device  = local.master_base.network_device
-      
+
       initialization = {
         dns = {
           servers = local.common_config.dns_servers

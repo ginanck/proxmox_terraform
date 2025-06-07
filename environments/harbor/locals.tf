@@ -34,8 +34,7 @@ locals {
     }
 
     memory = {
-      dedicated      = 8192
-      floating       = 4096
+      dedicated      = 6144
     }
 
     disk = {

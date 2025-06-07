@@ -12,7 +12,7 @@ locals {
     }
 
     cpu         = { cores = 4 }
-    memory      = { dedicated = 8192, floating = 1024 }
+    memory      = { dedicated = 8192 }
     disk        = { size = 40 }
     additional_disks = [
       { size = 120, interface = "virtio1" }
