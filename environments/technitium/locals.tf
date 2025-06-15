@@ -17,17 +17,16 @@ locals {
   }
 
   technitium_config = {
-    name        = "172.16.2.21-technitium"
+    name        = "172-16-2-21-technitium"
     description = "technitium dns server for lab setup"
     vm_id       = 221
     tags        = concat(local.common_config.tags, ["technitium"])
-    protection  = true
 
     clone = {
       datastore_id = "data"
       full         = true
       retries      = 3
-      vm_id        = 8052
+      vm_id        = 8053
     }
 
     cpu = {

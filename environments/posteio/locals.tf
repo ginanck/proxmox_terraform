@@ -1,23 +1,11 @@
 locals {
-  server_instance = "143"
-  selected_interface = local.server_instance == "143" ? local.common_config.interfaces_143 : local.common_config.interfaces_152
-  selected_ip = split("/", local.selected_interface.vmbr0_ip)[0]
-
   common_config = {
     dns_servers = ["8.8.8.8", "8.8.4.4"]
 
     interfaces = {
-      vmbr0_gateway = "65.109.108.129"
-    }
-
-    interfaces_143 = {
-      vmbr0_mac     = "00:50:56:01:23:9C"
-      vmbr0_ip      = "65.109.108.143/26"
-    }
-
-    interfaces_152 = {
-      vmbr0_mac     = "00:50:56:01:21:F3"
-      vmbr0_ip      = "65.109.108.152/26"
+      vmbr0_mac     = "00:50:56:01:16:34"
+      vmbr0_ip      = "157.180.50.19/26"
+      vmbr0_gateway = "157.180.50.1"
     }
 
     user_account = {
@@ -32,7 +20,7 @@ locals {
   }
 
   posteio_config = {
-    name        = "${local.selected_ip}-posteio"
+    name        = "157-180-50-19-posteio"
     description = "Poste.io Dockerized Email Server"
     vm_id       = 102
     tags        = concat(local.common_config.tags, ["posteio"])
@@ -63,7 +51,7 @@ locals {
     network_device = {
       bridge   = "vmbr0"
       model    = "virtio"
-      mac_address = local.selected_interface.vmbr0_mac
+      mac_address = local.common_config.interfaces.vmbr0_mac
     }
 
     initialization = {
@@ -72,7 +60,7 @@ locals {
       }
       ip_config = {
         ipv4 = {
-          address     = local.selected_interface.vmbr0_ip
+          address     = local.common_config.interfaces.vmbr0_ip
           gateway     = local.common_config.interfaces.vmbr0_gateway
         }
       }

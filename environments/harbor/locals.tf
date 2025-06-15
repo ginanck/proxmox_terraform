@@ -17,7 +17,7 @@ locals {
   }
 
   harbor_config = {
-    name        = "172.16.2.35-harbor"
+    name        = "172-16-2-35-harbor"
     description = "harbor for K8S LB"
     vm_id       = 235
     tags        = concat(local.common_config.tags, ["registry"])

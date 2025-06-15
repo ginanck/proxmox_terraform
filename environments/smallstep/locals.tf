@@ -17,17 +17,16 @@ locals {
   }
 
   smallstep_config = {
-    name        = "172.16.2.20-smallstep"
+    name        = "172-16-2-20-smallstep"
     description = "smallstep dns server for lab setup"
     vm_id       = 220
     tags        = concat(local.common_config.tags, ["smallstep"])
-    protection  = true
 
     clone = {
       datastore_id = "data"
       full         = true
       retries      = 3
-      vm_id        = 8052
+      vm_id        = 8053
     }
 
     cpu = {

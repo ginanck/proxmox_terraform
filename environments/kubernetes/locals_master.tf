@@ -27,7 +27,7 @@ locals {
 
   # Define the individual master nodes with just the unique properties
   master_nodes = {
-    "k8s-master01" = { name = "172.16.3.101-master-01", vm_id = 301, ip_address = "172.16.3.101/23" }
+    "k8s-master01" = { name = "172-16-3-101-master-01", vm_id = 301, ip_address = "172.16.3.101/23" }
   }
 
   # Assemble the complete k8s_master configuration

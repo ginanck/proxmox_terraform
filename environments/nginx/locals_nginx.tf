@@ -1,6 +1,6 @@
 locals {
   nginx_config = {
-    name        = "172.16.2.81-nginx"
+    name        = "172-16-2-81-nginx"
     description = "Nginx for K8S LB"
     vm_id       = 281
     tags        = concat(local.common_config.tags, ["loadbalancer"])

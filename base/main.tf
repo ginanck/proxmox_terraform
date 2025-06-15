@@ -4,18 +4,23 @@ resource "proxmox_virtual_environment_vm" "vm" {
   node_name       = var.vm.node_name
   vm_id           = var.vm.vm_id
   acpi            = var.vm.acpi
-  bios            = var.vm.bios
-  keyboard_layout = var.vm.keyboard_layout
-  migrate         = var.vm.migrate
-  on_boot         = var.vm.on_boot
-  protection      = var.vm.protection
-  reboot          = var.vm.reboot
-  scsi_hardware   = var.vm.scsi_hardware
-  started         = var.vm.started
-  stop_on_destroy = var.vm.stop_on_destroy
-  tablet_device   = var.vm.tablet_device
-  template        = var.vm.template
-  tags            = var.vm.tags
+  agent {
+    enabled       = var.vm.agent.enabled
+  }
+
+  bios                  = var.vm.bios
+  keyboard_layout       = var.vm.keyboard_layout
+  migrate               = var.vm.migrate
+  on_boot               = var.vm.on_boot
+  protection            = var.vm.protection
+  reboot                = var.vm.reboot
+  reboot_after_update   = var.vm.reboot_after_update
+  scsi_hardware         = var.vm.scsi_hardware
+  started               = var.vm.started
+  stop_on_destroy       = var.vm.stop_on_destroy
+  tablet_device         = var.vm.tablet_device
+  template              = var.vm.template
+  tags                  = var.vm.tags
 
   timeout_clone       = var.vm.timeouts.clone
   timeout_create      = var.vm.timeouts.create
@@ -109,6 +114,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
 
   initialization {
     datastore_id = var.vm.initialization.datastore_id
+    interface    = var.vm.initialization.interface
 
     dns {
       servers = var.vm.initialization.dns.servers

@@ -30,7 +30,8 @@ locals {
 
   # Define the individual slave nodes
   slave_nodes = {
-    "jenkins-slave01" = { name = "172.16.2.42-jenkins-slave-01", vm_id = 242, ip_address = "172.16.2.42/23" }
+    "jenkins-slave01" = { name = "172-16-2-42-jenkins-slave-01", vm_id = 242, ip_address = "172.16.2.42/23" }
+    "jenkins-slave02" = { name = "172-16-2-43-jenkins-slave-02", vm_id = 243, ip_address = "172.16.2.43/23" }
   }
 
   # Assemble the complete jenkins_slave configuration

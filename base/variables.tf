@@ -4,21 +4,25 @@ variable "vm" {
     # Basic VM settings
     name            = optional(string, "vm-test1")
     description     = optional(string, "Test VM managed by Terraform")
-    node_name       = optional(string, "oxygen")
+    node_name       = optional(string, "carbon")
     vm_id           = optional(number, 110)
     
     # VM behavior settings
-    acpi            = optional(bool, true)
-    bios            = optional(string, "seabios")
-    keyboard_layout = optional(string, "en-us")
-    migrate         = optional(bool, false)
-    on_boot         = optional(bool, true)
-    protection      = optional(bool, false)
-    reboot          = optional(bool, true)
-    started         = optional(bool, true)
-    stop_on_destroy = optional(bool, false)
-    tablet_device   = optional(bool, true)
-    template        = optional(bool, false)
+    acpi                  = optional(bool, true)
+    agent                 = optional(object({
+      enabled = optional(bool, true)
+    }), {})
+    bios                  = optional(string, "seabios")
+    keyboard_layout       = optional(string, "en-us")
+    migrate               = optional(bool, false)
+    on_boot               = optional(bool, true)
+    protection            = optional(bool, false)
+    reboot                = optional(bool, false)
+    reboot_after_update   = optional(bool, true)
+    started               = optional(bool, true)
+    stop_on_destroy       = optional(bool, false)
+    tablet_device         = optional(bool, true)
+    template              = optional(bool, false)
     
     # Hardware settings
     scsi_hardware   = optional(string, "virtio-scsi-pci")
@@ -123,6 +127,7 @@ variable "vm" {
     # Initialization
     initialization = optional(object({
       datastore_id = optional(string, "data")
+      interface    = optional(string, "scsi0")
       dns = optional(object({
         servers = optional(list(string), ["1.1.1.1", "1.0.0.1"])
       }), {})

@@ -1,6 +1,6 @@
 locals {
   nfs_server_config = {
-    name        = "172.16.2.61-nfs-server"
+    name        = "172-16-2-61-nfs-server"
     description = "NFS Server for K8S Storage"
     vm_id       = 261
     tags        = concat(local.common_config.tags, ["nfs"])
