@@ -12,7 +12,7 @@ locals {
     }
 
     cpu         = { cores = 4 }
-    memory      = { dedicated = 6144 }
+    memory      = { dedicated = 8192 }
     disk        = { size = 40 }
 
     additional_disks = [

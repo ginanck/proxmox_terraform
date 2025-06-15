@@ -17,7 +17,7 @@ locals {
     }
     
     memory = {
-      dedicated      = 2048
+      dedicated      = 4096
     }
 
     disk = {
