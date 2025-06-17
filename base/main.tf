@@ -127,6 +127,16 @@ resource "proxmox_virtual_environment_vm" "vm" {
       }
     }
 
+    dynamic "ip_config" {
+      for_each = var.vm.initialization.additional_ip_configs
+      content {
+        ipv4 {
+          address = ip_config.value.ipv4.address
+          gateway = ip_config.value.ipv4.gateway
+        }
+      }
+    }
+
     user_account {
       keys     = var.vm.initialization.user_account.keys
       password = var.vm.initialization.user_account.password

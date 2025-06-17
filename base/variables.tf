@@ -137,6 +137,13 @@ variable "vm" {
           gateway = optional(string, "172.16.2.1")
         }), {})
       }), {})
+      # Add support for additional IP configurations
+      additional_ip_configs = optional(list(object({
+        ipv4 = optional(object({
+          address = optional(string)
+          gateway = optional(string)
+        }), {})
+      })), [])
       user_account = optional(object({
         keys     = optional(list(string), ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmaSIzwHMrS7/nfYreiGrPfujrvABwnmODooaaIy66u ansible@gkorkmaz"])
         password = optional(string, "admin")
