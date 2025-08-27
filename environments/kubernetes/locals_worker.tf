@@ -27,8 +27,8 @@ locals {
 
   # Define the individual worker nodes
   worker_nodes = {
-    "k8s-worker01" = { name = "172-16-3-111-worker-01", vm_id = 311, ip_address = "172.16.3.111/23" }
     "k8s-worker02" = { name = "172-16-3-112-worker-02", vm_id = 312, ip_address = "172.16.3.112/23" }
+    "k8s-worker03" = { name = "172-16-3-113-worker-03", vm_id = 313, ip_address = "172.16.3.113/23" }
   }
 
   # Assemble the complete k8s_worker configuration
