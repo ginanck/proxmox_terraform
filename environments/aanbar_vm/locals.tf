@@ -21,7 +21,7 @@ locals {
     name        = "172-16-3-200-ansible-lab"
     description = "ansible lab"
     vm_id       = 400
-    tags        = concat(local.common_config.tags, ["ansible-lab"])
+    tags        = concat(local.common_config.tags)
 
     clone = {
       datastore_id = "data"
