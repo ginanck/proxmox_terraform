@@ -44,6 +44,87 @@ provider "proxmox" {
 }
 ```
 
+### Managing Proxmox Credentials with Environment Variables
+
+For security, avoid hardcoding Proxmox credentials. Use environment variables instead:
+
+```bash
+# Method 1: Username/Password authentication
+export PROXMOX_VE_ENDPOINT="https://proxmox.example.com:8006/api2/json"
+export PROXMOX_VE_USERNAME="user@pam"
+export PROXMOX_VE_PASSWORD="your-password"
+
+# Method 2: API Token authentication (recommended)
+export PROXMOX_VE_ENDPOINT="https://proxmox.example.com:8006/api2/json"
+export PROXMOX_VE_API_TOKEN="USER@REALM!TOKENID=UUID"
+```
+
+Then configure the provider to automatically use these environment variables:
+
+```hcl
+provider "proxmox" {
+  # Environment variables are automatically used:
+  # endpoint  = env.PROXMOX_VE_ENDPOINT
+  # username  = env.PROXMOX_VE_USERNAME  
+  # password  = env.PROXMOX_VE_PASSWORD
+  # api_token = env.PROXMOX_VE_API_TOKEN
+  
+  insecure = true
+}
+```
+
+**Note**: The provider automatically reads these standard environment variables, so no explicit configuration is needed in the provider block.
+
+## Managing VM Initialization Secrets
+
+For `init_username` and `init_password` variables, you can use auto-loading variables files to avoid hardcoding credentials:
+
+### Auto-loading Variables File (secrets.auto.tfvars)
+
+Create a `secrets.auto.tfvars` file in your environment directory that will be automatically loaded by Terraform:
+
+**File: `environments/your-env/secrets.auto.tfvars`**
+```hcl
+# VM initialization credentials
+init_username = "your-vm-username"
+init_password = "your-vm-password"
+```
+
+**Required setup:**
+- Ensure that the `secrets.auto.tfvars` file is placed in the environment directory (e.g., `environments/your-env/secrets.auto.tfvars`).
+- Declare the `init_username` and `init_password` variables in your environment's `variables.tf` file.
+
+**Declare variables** in your environment's `variables.tf`:
+```hcl
+# environments/your-env/variables.tf
+variable "init_username" {
+  description = "Default user account username for VM"
+  type        = string
+  sensitive   = true
+}
+
+variable "init_password" {
+  description = "Default user account password for VM" 
+  type        = string
+  sensitive   = true
+}
+```
+
+**Ensure `.gitignore` excludes** the secrets file:
+```gitignore
+*.tfvars
+secrets.*
+```
+
+### Using Environment Variables
+
+You can also use environment variables to provide the `init_username` and `init_password` values:
+
+```sh
+export TF_VAR_init_username="your-vm-username"
+export TF_VAR_init_password="your-vm-password"
+```
+
 ## Module Usage
 
 Basic usage example:

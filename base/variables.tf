@@ -529,7 +529,6 @@ variable "init_password" {
   description = "Default user account password"
   type        = string
   default     = "dummy"
-  sensitive   = true
 }
 
 variable "init_ssh_keys" {

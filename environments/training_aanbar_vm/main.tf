@@ -25,8 +25,8 @@ module "ansible-lab" {
   network_bridge    = "vmbr1"
   init_gateway      = "172.16.2.1"
   init_ip_address   = "172.16.3.200/23"
-  init_username     = "ansible"
-  init_password     = "ansible"
+  init_username     = var.init_username
+  init_password     = var.init_password
   init_ssh_keys     = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmaSIzwHMrS7/nfYreiGrPfujrvABwnmODooaaIy66u ansible@gkorkmaz",
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEKPfGz+sMQ+ZwXjvgS0W4SJOoeJQA72Kx24tRW+Uf5p gkorkmaz",

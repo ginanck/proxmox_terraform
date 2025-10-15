@@ -25,8 +25,8 @@ module "jenkins_master" {
   network_bridge    = "vmbr1"
   init_gateway      = "172.16.2.1"
   init_ip_address   = "172.16.2.41/23"
-  init_username     = "ansible"
-  init_password     = "ansible"
+  init_username     = var.init_username
+  init_password     = var.init_password
 
   # Clone settings
   clone_vm_id = 8150
@@ -60,8 +60,8 @@ module "jenkins_slaves" {
   network_bridge    = "vmbr1"
   init_gateway      = "172.16.2.1"
   init_ip_address   = each.value.ip_address
-  init_username     = "ansible"
-  init_password     = "ansible"
+  init_username     = var.init_username
+  init_password     = var.init_password
 
   # Clone settings
   clone_vm_id = 8150

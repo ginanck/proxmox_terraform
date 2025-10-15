@@ -24,8 +24,8 @@ module "posteio" {
   network_mac_address = "00:50:56:01:16:34"
   init_gateway        = "157.180.50.1"
   init_ip_address     = "157.180.50.19/26"
-  init_username       = "ansible"
-  init_password       = "ansible"
+  init_username     = var.init_username
+  init_password     = var.init_password
 
   # Clone settings
   clone_vm_id = 8150

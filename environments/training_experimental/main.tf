@@ -34,8 +34,8 @@ module "lb_nginx" {
 
   init_gateway        = ""
   init_ip_address     = "dhcp"
-  init_username       = "ansible"
-  init_password       = "ansible"
+  init_username     = var.init_username
+  init_password     = var.init_password
 
   # Clone settings
   clone_vm_id = 8150
