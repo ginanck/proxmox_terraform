@@ -1,5 +1,5 @@
 module "k8s_master" {
-  source = "../../base"
+  source   = "../../base"
   for_each = local.master
 
   providers = {
@@ -16,25 +16,25 @@ module "k8s_master" {
   cpu_cores        = 4
   memory_dedicated = 8192
   disk_size        = 40
-  
+
   # Additional storage
   disk_additional = [
     { size = 100, interface = "virtio1" }
   ]
-  
+
   # Network
-  network_bridge    = "vmbr1"
-  init_gateway      = "172.16.2.1"
-  init_ip_address   = each.value.ip_address
-  init_username     = var.init_username
-  init_password     = var.init_password
+  network_bridge  = "vmbr1"
+  init_gateway    = "172.16.2.1"
+  init_ip_address = each.value.ip_address
+  init_username   = var.init_username
+  init_password   = var.init_password
 
   # Clone settings
   clone_vm_id = 8101
 }
 
 module "k8s_worker" {
-  source = "../../base"
+  source   = "../../base"
   for_each = local.worker
 
   providers = {
@@ -51,18 +51,18 @@ module "k8s_worker" {
   cpu_cores        = 4
   memory_dedicated = 12288
   disk_size        = 40
-  
+
   # Additional storage
   disk_additional = [
     { size = 200, interface = "virtio1" }
   ]
-  
+
   # Network
-  network_bridge    = "vmbr1"
-  init_gateway      = "172.16.2.1"
-  init_ip_address   = each.value.ip_address
-  init_username     = var.init_username
-  init_password     = var.init_password
+  network_bridge  = "vmbr1"
+  init_gateway    = "172.16.2.1"
+  init_ip_address = each.value.ip_address
+  init_username   = var.init_username
+  init_password   = var.init_password
 
   # Clone settings
   clone_vm_id = 8053

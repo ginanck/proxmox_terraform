@@ -36,10 +36,10 @@ provider "proxmox" {
   endpoint = "https://proxmox.example.com:8006/api2/json"  # Your Proxmox API endpoint
   username = "user@pam"                                    # Your Proxmox username
   password = "your-password"                               # Your Proxmox password
-  
+
   # Alternatively, use API token
   # api_token = "USER@REALM!TOKENID=UUID"
-  
+
   insecure = true  # Set to false in production
 }
 ```
@@ -65,10 +65,10 @@ Then configure the provider to automatically use these environment variables:
 provider "proxmox" {
   # Environment variables are automatically used:
   # endpoint  = env.PROXMOX_VE_ENDPOINT
-  # username  = env.PROXMOX_VE_USERNAME  
+  # username  = env.PROXMOX_VE_USERNAME
   # password  = env.PROXMOX_VE_PASSWORD
   # api_token = env.PROXMOX_VE_API_TOKEN
-  
+
   insecure = true
 }
 ```
@@ -104,7 +104,7 @@ variable "init_username" {
 }
 
 variable "init_password" {
-  description = "Default user account password for VM" 
+  description = "Default user account password for VM"
   type        = string
   sensitive   = true
 }
@@ -137,11 +137,11 @@ module "proxmox_vm" {
   description = "Web Server VM"
   node_name   = "proxmox-node1"
   vm_id       = 120
-  
+
   # CPU and Memory
   cpu_cores        = 2
   memory_dedicated = 4096
-  
+
   # Network
   init_ip_address = "192.168.1.100/24"
   init_gateway    = "192.168.1.1"
@@ -328,9 +328,9 @@ module "web_server" {
   memory_dedicated = 4096
   disk_size        = 20
 
-  # Network configuration  
+  # Network configuration
   network_bridge = "vmbr0"
-  
+
   # Cloud-init configuration
   init_ip_address = "192.168.1.100/24"
   init_gateway    = "192.168.1.1"
@@ -357,7 +357,7 @@ module "db_server" {
   # Basic VM settings
   name        = "db-server-01"
   description = "PostgreSQL Database Server"
-  node_name   = "proxmox-node2" 
+  node_name   = "proxmox-node2"
   vm_id       = 300
   tags        = ["database", "postgresql", "production"]
 
@@ -365,7 +365,7 @@ module "db_server" {
   cpu_cores        = 4
   cpu_type         = "host"
   memory_dedicated = 8192
-  
+
   # Primary disk (OS)
   disk_size         = 40
   disk_datastore_id = "ssd-pool"
@@ -377,7 +377,7 @@ module "db_server" {
     {
       interface    = "virtio1"
       size         = 100
-      datastore_id = "ssd-pool" 
+      datastore_id = "ssd-pool"
       ssd          = true
       backup       = true
     },
@@ -392,7 +392,7 @@ module "db_server" {
   # Primary network (management)
   network_bridge     = "vmbr0"
   network_vlan_id    = 100
-  
+
   # Additional network for database traffic
   network_additional = [
     {
@@ -405,7 +405,7 @@ module "db_server" {
   init_ip_address = "10.0.100.50/24"
   init_gateway    = "10.0.100.1"
   init_dns_servers = ["10.0.100.10", "10.0.100.11"]
-  
+
   # Additional IP for database network
   additional_ip_configs = [
     {
@@ -446,7 +446,7 @@ locals {
       ip    = "192.168.1.101/24"
     }
     web2 = {
-      vm_id = 202  
+      vm_id = 202
       ip    = "192.168.1.102/24"
     }
   }
@@ -455,19 +455,19 @@ locals {
 module "web_servers" {
   source   = "./base"
   for_each = local.web_servers
-  
+
   name                = "web-server-${each.key}"
   description         = "Web Server ${each.key}"
   vm_id              = each.value.vm_id
   node_name          = "proxmox-node1"
-  
+
   cpu_cores          = 2
   memory_dedicated   = 4096
   disk_size          = 20
-  
+
   init_ip_address    = each.value.ip
   init_gateway       = "192.168.1.1"
-  
+
   clone_vm_id        = 9000
   tags               = ["web", "production"]
 }
@@ -484,7 +484,7 @@ output "web_server_ips" {
 ### Common Issues
 
 - **Authentication**: Verify Proxmox API credentials and permissions
-- **VM ID conflicts**: Ensure unique VM IDs across the cluster  
+- **VM ID conflicts**: Ensure unique VM IDs across the cluster
 - **Clone failures**: Verify source template exists and is accessible
 - **IP conflicts**: Use proper CIDR notation and ensure IPs are available
 - **Timeouts**: Increase timeout values for larger VMs or slower storage

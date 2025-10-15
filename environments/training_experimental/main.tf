@@ -15,12 +15,12 @@ module "lb_nginx" {
   cpu_cores        = 2
   memory_dedicated = 4096
   disk_size        = 40
-  
+
   # Additional storage
   disk_additional = [
     { size = 100, interface = "virtio1" }
   ]
-  
+
   # Network
   network_bridge      = "vmbr1"
   network_mac_address = "00:50:56:01:17:1D"
@@ -32,10 +32,10 @@ module "lb_nginx" {
     }
   ]
 
-  init_gateway        = ""
-  init_ip_address     = "dhcp"
-  init_username     = var.init_username
-  init_password     = var.init_password
+  init_gateway    = ""
+  init_ip_address = "dhcp"
+  init_username   = var.init_username
+  init_password   = var.init_password
 
   # Clone settings
   clone_vm_id = 8150

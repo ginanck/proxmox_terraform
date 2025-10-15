@@ -20,11 +20,11 @@ module "technitium" {
   ]
 
   # Network
-  network_bridge    = "vmbr1"
-  init_gateway      = "172.16.2.1"
-  init_ip_address   = "172.16.2.21/23"
-  init_username     = var.init_username
-  init_password     = var.init_password
+  network_bridge  = "vmbr1"
+  init_gateway    = "172.16.2.1"
+  init_ip_address = "172.16.2.21/23"
+  init_username   = var.init_username
+  init_password   = var.init_password
 
   # Clone settings
   clone_vm_id = 8053
@@ -32,5 +32,5 @@ module "technitium" {
 
 output "vm_details" {
   description = "VM Information"
-  value = module.technitium.vm_details
+  value       = module.technitium.vm_details
 }

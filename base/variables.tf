@@ -33,7 +33,7 @@ variable "tags" {
 }
 
 # =============================================================================
-# VM BEHAVIOR SETTINGS  
+# VM BEHAVIOR SETTINGS
 # =============================================================================
 
 variable "acpi" {
@@ -318,7 +318,7 @@ variable "disk_file_format" {
   validation {
     condition = contains([
       "raw",
-      "qcow2", 
+      "qcow2",
       "vmdk"
     ], var.disk_file_format)
     error_message = "Disk file format must be one of: raw, qcow2, vmdk."
@@ -409,7 +409,7 @@ variable "network_model" {
     condition = contains([
       "virtio",
       "e1000",
-      "e1000-82540em", 
+      "e1000-82540em",
       "e1000-82544gc",
       "e1000-82545em",
       "rtl8139",
@@ -534,7 +534,7 @@ variable "init_password" {
 variable "init_ssh_keys" {
   description = "List of SSH public keys for default user"
   type        = list(string)
-  default     = [
+  default = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmaSIzwHMrS7/nfYreiGrPfujrvABwnmODooaaIy66u ansible@gkorkmaz",
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEKPfGz+sMQ+ZwXjvgS0W4SJOoeJQA72Kx24tRW+Uf5p gkorkmaz"
   ]

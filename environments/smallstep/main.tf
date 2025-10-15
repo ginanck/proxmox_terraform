@@ -17,11 +17,11 @@ module "smallstep" {
   disk_size        = 16
 
   # Network
-  network_bridge    = "vmbr1"
-  init_gateway      = "172.16.2.1"
-  init_ip_address   = "172.16.2.20/23"
-  init_username     = var.init_username
-  init_password     = var.init_password
+  network_bridge  = "vmbr1"
+  init_gateway    = "172.16.2.1"
+  init_ip_address = "172.16.2.20/23"
+  init_username   = var.init_username
+  init_password   = var.init_password
 
   # Clone settings
   clone_vm_id = 8053
@@ -29,5 +29,5 @@ module "smallstep" {
 
 output "vm_details" {
   description = "VM Information"
-  value = module.smallstep.vm_details
+  value       = module.smallstep.vm_details
 }

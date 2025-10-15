@@ -17,11 +17,11 @@ module "nginx" {
   disk_size        = 40
 
   # Network
-  network_bridge    = "vmbr1"
-  init_gateway      = "172.16.2.1"
-  init_ip_address   = "172.16.2.81/23"
-  init_username     = var.init_username
-  init_password     = var.init_password
+  network_bridge  = "vmbr1"
+  init_gateway    = "172.16.2.1"
+  init_ip_address = "172.16.2.81/23"
+  init_username   = var.init_username
+  init_password   = var.init_password
 
   # Clone settings
   clone_vm_id = 8150
@@ -29,5 +29,5 @@ module "nginx" {
 
 output "vm_details" {
   description = "VM Information"
-  value = module.nginx.vm_details
+  value       = module.nginx.vm_details
 }
