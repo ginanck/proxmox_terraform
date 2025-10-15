@@ -31,3 +31,8 @@ module "harbor" {
   # Clone settings
   clone_vm_id = 8150
 }
+
+output "vm_details" {
+  description = "VM Information"
+  value = module.harbor.vm_details
+}
