@@ -522,13 +522,13 @@ variable "init_gateway" {
 variable "init_username" {
   description = "Default user account username"
   type        = string
-  default     = "ansible"
+  default     = "admin"
 }
 
 variable "init_password" {
   description = "Default user account password"
   type        = string
-  default     = "ansible"
+  default     = "admin"
   sensitive   = true
 }
 
