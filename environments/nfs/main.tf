@@ -17,7 +17,7 @@ module "nfs_server" {
   disk_size        = 20
   
   # Additional storage
-  additional_disks = [
+  disk_additional = [
     { size = 200, interface = "virtio1" }
   ]
   

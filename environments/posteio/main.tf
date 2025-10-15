@@ -15,7 +15,7 @@ module "posteio" {
   cpu_cores        = 4
   memory_dedicated = 8192
   disk_size        = 20
-  additional_disks = [
+  disk_additional = [
     { size = 100, interface = "virtio1" }
   ]
 

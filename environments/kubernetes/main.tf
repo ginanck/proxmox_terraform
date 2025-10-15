@@ -18,7 +18,7 @@ module "k8s_master" {
   disk_size        = 40
   
   # Additional storage
-  additional_disks = [
+  disk_additional = [
     { size = 100, interface = "virtio1" }
   ]
   
@@ -53,7 +53,7 @@ module "k8s_worker" {
   disk_size        = 40
   
   # Additional storage
-  additional_disks = [
+  disk_additional = [
     { size = 200, interface = "virtio1" }
   ]
   

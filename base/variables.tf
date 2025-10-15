@@ -371,7 +371,7 @@ variable "disk_ssd" {
 # ADDITIONAL DISKS (OPTIONAL)
 # =============================================================================
 
-variable "additional_disks" {
+variable "disk_additional" {
   description = "Optional list of additional disks to attach to the VM. Leave empty (default) if no additional disks are needed."
   type = list(object({
     size         = optional(number, 10)
@@ -467,7 +467,7 @@ variable "network_vlan_id" {
 # ADDITIONAL NETWORK DEVICES (OPTIONAL)
 # =============================================================================
 
-variable "additional_network_devices" {
+variable "network_additional" {
   description = "Optional list of additional network devices to attach to the VM. Leave empty (default) if only the primary network device is needed."
   type = list(object({
     bridge      = optional(string, "vmbr2")
@@ -522,13 +522,13 @@ variable "init_gateway" {
 variable "init_username" {
   description = "Default user account username"
   type        = string
-  default     = "admin"
+  default     = "dummy"
 }
 
 variable "init_password" {
   description = "Default user account password"
   type        = string
-  default     = "admin"
+  default     = "dummy"
   sensitive   = true
 }
 

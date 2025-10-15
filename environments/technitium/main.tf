@@ -15,7 +15,7 @@ module "technitium" {
   cpu_cores        = 2
   memory_dedicated = 2048
   disk_size        = 12
-  additional_disks = [
+  disk_additional = [
     { size = 20, interface = "virtio1" }
   ]
 

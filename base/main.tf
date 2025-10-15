@@ -79,7 +79,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
 
   # Additional disks
   dynamic "disk" {
-    for_each = var.additional_disks
+    for_each = var.disk_additional
     content {
       aio          = disk.value.aio
       backup       = disk.value.backup
@@ -110,7 +110,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
 
   # Additional network devices
   dynamic "network_device" {
-    for_each = var.additional_network_devices
+    for_each = var.network_additional
     content {
       bridge      = network_device.value.bridge
       enabled     = network_device.value.enabled

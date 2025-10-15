@@ -162,9 +162,9 @@ This module provides individual variables for all VM configuration options. Each
 
 | Variable | Description | Type | Default |
 |----------|-------------|------|---------|
-| `additional_disks` | List of additional disks to attach to the VM | `list(object)` | `[]` |
+| `disk_additional` | List of additional disks to attach to the VM | `list(object)` | `[]` |
 
-Each object in `additional_disks` supports the same parameters as the primary disk configuration.
+Each object in `disk_additional` supports the same parameters as the primary disk configuration.
 
 ### Primary Network Device
 
@@ -184,7 +184,7 @@ Each object in `additional_disks` supports the same parameters as the primary di
 
 | Variable | Description | Type | Default |
 |----------|-------------|------|---------|
-| `additional_network_devices` | List of additional network devices | `list(object)` | `[]` |
+| `network_additional` | List of additional network devices | `list(object)` | `[]` |
 
 ### Cloud-Init Configuration
 
@@ -195,8 +195,8 @@ Each object in `additional_disks` supports the same parameters as the primary di
 | `init_dns_servers` | List of DNS servers | `list(string)` | `["8.8.8.8", "8.8.4.4"]` |
 | `init_ip_address` | Primary IP address with CIDR | `string` | `"172.16.2.100/24"` |
 | `init_gateway` | Default gateway IP address | `string` | `"172.16.2.1"` |
-| `init_username` | Default user account username | `string` | `"ansible"` |
-| `init_password` | Default user account password | `string` | `"ansible"` |
+| `init_username` | Default user account username | `string` | `"dummy"` |
+| `init_password` | Default user account password | `string` | `"dummy"` |
 | `init_ssh_keys` | List of SSH public keys for default user | `list(string)` | See variables.tf |
 
 ### Additional IP Configurations (Optional)
@@ -292,7 +292,7 @@ module "db_server" {
   disk_backup       = true
 
   # Additional storage for database
-  additional_disks = [
+  disk_additional = [
     {
       interface    = "virtio1"
       size         = 100
@@ -313,7 +313,7 @@ module "db_server" {
   network_vlan_id    = 100
   
   # Additional network for database traffic
-  additional_network_devices = [
+  network_additional = [
     {
       bridge  = "vmbr1"
       vlan_id = 200

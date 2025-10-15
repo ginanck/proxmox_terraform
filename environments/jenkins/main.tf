@@ -17,7 +17,7 @@ module "jenkins_master" {
   disk_size        = 20
   
   # Additional storage
-  additional_disks = [
+  disk_additional = [
     { size = 100, interface = "virtio1" }
   ]
   
@@ -52,7 +52,7 @@ module "jenkins_slaves" {
   disk_size        = 20
   
   # Additional storage
-  additional_disks = [
+  disk_additional = [
     { size = 100, interface = "virtio1" }
   ]
   
