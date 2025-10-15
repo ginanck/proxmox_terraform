@@ -1,6 +1,6 @@
-# Proxmox Virtual Machine Terraform Module
+# Proxmox Virtual Machine Base Module
 
-This Terraform module allows you to easily provision and manage Virtual Machines in a Proxmox environment with extensive configuration options.
+A Terraform module for provisioning Virtual Machines in Proxmox VE with comprehensive configuration options. This module provides all the necessary variables as individual inputs, making it easy to customize VM configurations while maintaining sensible defaults.
 
 ## Table of Contents
 
@@ -20,14 +20,14 @@ This Terraform module allows you to easily provision and manage Virtual Machines
 
 ## Provider Configuration
 
-This module uses the `bpg/proxmox` provider. You need to configure the provider in your root module:
+This module uses the `bpg/proxmox` provider. Configure the provider in your root module:
 
-```tf
+```hcl
 terraform {
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.73.0"
+      version = "0.85.1"
     }
   }
 }
@@ -48,611 +48,352 @@ provider "proxmox" {
 
 Basic usage example:
 
-```tf
+```hcl
 module "proxmox_vm" {
-  source = "bitbucket.org/ginanck/proxmox_terraform"
+  source = "../../base"  # Path to this base module
 
-  vm = {
-    name        = "web-server"
-    description = "Web Server VM"
-    node_name   = "pve-node1"
-    vm_id       = 120
-    
-    cpu = {
-      cores = 2
-    }
-    
-    # All other settings will use defaults from variables.tf
-  }
+  name        = "web-server"
+  description = "Web Server VM"
+  node_name   = "proxmox-node1"
+  vm_id       = 120
+  
+  # CPU and Memory
+  cpu_cores        = 2
+  memory_dedicated = 4096
+  
+  # Network
+  init_ip_address = "192.168.1.100/24"
+  init_gateway    = "192.168.1.1"
 }
 ```
 
 ## Input Variables
 
-The module accepts a single complex variable `vm` that contains all configuration options. Most parameters have sensible defaults defined in `variables.tf`.
+This module provides individual variables for all VM configuration options. Each variable has a sensible default value defined in `variables.tf`.
 
 ### Basic VM Settings
 
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `name` | Name of the VM | `"vm-test1"` |
-| `description` | Description of the VM | `"Test VM managed by Terraform"` |
-| `node_name` | Proxmox node name where VM will be created | `"oxygen"` |
-| `vm_id` | VM ID in Proxmox | `110` |
-| `acpi` | Enable/disable ACPI | `true` |
-| `bios` | BIOS type (seabios or ovmf) | `"seabios"` |
-| `keyboard_layout` | Keyboard layout | `"en-us"` |
-| `migrate` | Allow VM migration | `false` |
-| `on_boot` | Start VM on boot | `true` |
-| `protection` | Enable VM protection | `false` |
-| `reboot` | Allow VM reboot | `true` |
-| `started` | Start VM after creation | `true` |
-| `stop_on_destroy` | Stop VM when destroyed | `false` |
-| `tablet_device` | Enable tablet device | `true` |
-| `template` | Make VM a template | `false` |
-| `scsi_hardware` | SCSI controller type | `"virtio-scsi-pci"` |
-| `tags` | VM tags | `["test", "test-vm-base"]` |
+| Variable | Description | Type | Default |
+|----------|-------------|------|---------|
+| `name` | VM name | `string` | `"vm-test1"` |
+| `description` | VM description | `string` | `"Test VM managed by Terraform"` |
+| `node_name` | Proxmox node name where the VM will be created | `string` | `"carbon"` |
+| `vm_id` | VM ID (must be unique across the Proxmox cluster) | `number` | `110` |
+| `tags` | List of tags to apply to the VM | `list(string)` | `["test", "test-vm-base"]` |
 
-### CPU Configuration
+### VM Behavior Settings
 
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `cpu.cores` | Number of CPU cores | `1` |
-| `cpu.hotplugged` | Hotplugged CPUs | `0` |
-| `cpu.limit` | CPU usage limit (0 for unlimited) | `0` |
-| `cpu.numa` | NUMA enabled | `false` |
-| `cpu.sockets` | Number of CPU sockets | `1` |
-| `cpu.type` | CPU type | `"host"` |
-| `cpu.units` | CPU units for scheduling | `1024` |
+| Variable | Description | Type | Default |
+|----------|-------------|------|---------|
+| `acpi` | Enable ACPI support | `bool` | `true` |
+| `agent_enabled` | Enable QEMU guest agent | `bool` | `true` |
+| `bios` | BIOS type (seabios or ovmf) | `string` | `"seabios"` |
+| `keyboard_layout` | Keyboard layout | `string` | `"en-us"` |
+| `migrate` | Enable live migration | `bool` | `false` |
+| `on_boot` | Start VM on node boot | `bool` | `true` |
+| `protection` | Enable VM protection (prevents accidental deletion) | `bool` | `false` |
+| `reboot` | Reboot VM after creation | `bool` | `false` |
+| `reboot_after_update` | Reboot VM after updates | `bool` | `true` |
+| `started` | Start VM after creation | `bool` | `true` |
+| `stop_on_destroy` | Stop VM before destroying | `bool` | `false` |
+| `tablet_device` | Enable tablet device for better mouse handling | `bool` | `true` |
+| `template` | Create as template | `bool` | `false` |
+| `scsi_hardware` | SCSI hardware type | `string` | `"virtio-scsi-pci"` |
 
-### Memory Configuration
+### Timeout Settings
 
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `memory.dedicated` | VM memory in MB | `2048` |
-| `memory.floating` | Floating memory | `0` |
-| `memory.keep_hugepages` | Keep hugepages | `false` |
-| `memory.shared` | Shared memory | `0` |
-
-### Disk Configuration
-
-#### Primary Disk
-
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `disk.aio` | AIO type | `"io_uring"` |
-| `disk.backup` | Include in backups | `false` |
-| `disk.cache` | Disk cache mode | `"none"` |
-| `disk.datastore_id` | Storage location | `"data"` |
-| `disk.discard` | Discard mode | `"ignore"` |
-| `disk.interface` | Disk interface | `"virtio0"` |
-| `disk.iothread` | Enable IO thread | `false` |
-| `disk.replicate` | Replicate disk | `false` |
-| `disk.size` | Disk size in GB | `10` |
-| `disk.ssd` | Emulate SSD | `false` |
-
-#### Additional Disks
-
-Additional disks can be specified using the `additional_disks` parameter, which accepts a list of objects with the same parameters as the primary disk.
-
-### Network Configuration
-
-#### Primary Network Device
-
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `network_device.bridge` | Bridge device | `"vmbr1"` |
-| `network_device.enabled` | Enable network device | `true` |
-| `network_device.firewall` | Enable firewall | `false` |
-| `network_device.model` | Network device model | `"virtio"` |
-| `network_device.mac_address` | MAC address | `null` |
-| `network_device.mtu` | MTU size | `0` |
-| `network_device.queues` | Number of queues | `0` |
-| `network_device.rate_limit` | Rate limit in MB/s | `0` |
-| `network_device.vlan_id` | VLAN ID | `0` |
-
-#### Additional Network Devices
-
-Additional network devices can be specified using the `additional_network_devices` parameter, which accepts a list of objects with the same parameters as the primary network device.
-
-### Initialization Configuration (Cloud-Init)
-
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `initialization.datastore_id` | Storage for cloud-init disk | `"data"` |
-| `initialization.dns.servers` | DNS servers | `["1.1.1.1", "1.0.0.1"]` |
-| `initialization.ip_config.ipv4.address` | IPv4 address with CIDR | `"172.16.2.100/24"` |
-| `initialization.ip_config.ipv4.gateway` | IPv4 gateway | `"172.16.2.1"` |
-| `initialization.user_account.keys` | SSH keys | See variables.tf |
-| `initialization.user_account.password` | User password | `"admin"` |
-| `initialization.user_account.username` | Username | `"admin"` |
+| Variable | Description | Type | Default |
+|----------|-------------|------|---------|
+| `timeout_clone` | Timeout for clone operations (seconds) | `number` | `1800` |
+| `timeout_create` | Timeout for create operations (seconds) | `number` | `1800` |
+| `timeout_migrate` | Timeout for migrate operations (seconds) | `number` | `1800` |
+| `timeout_reboot` | Timeout for reboot operations (seconds) | `number` | `1800` |
+| `timeout_shutdown_vm` | Timeout for shutdown operations (seconds) | `number` | `1800` |
+| `timeout_start_vm` | Timeout for start operations (seconds) | `number` | `1800` |
+| `timeout_stop_vm` | Timeout for stop operations (seconds) | `number` | `300` |
 
 ### Clone Settings
 
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `clone.datastore_id` | Target datastore | `"data"` |
-| `clone.full` | Full clone (vs. linked clone) | `true` |
-| `clone.retries` | Retry count | `3` |
-| `clone.vm_id` | Source VM/template ID | `8052` |
+| Variable | Description | Type | Default |
+|----------|-------------|------|---------|
+| `clone_vm_id` | VM ID of the template to clone from | `number` | `8052` |
+| `clone_datastore_id` | Datastore ID for clone operation | `string` | `"data"` |
+| `clone_full` | Perform full clone instead of linked clone | `bool` | `true` |
+| `clone_retries` | Number of clone retries | `number` | `3` |
 
-### Timeouts Configuration
+### CPU Configuration
 
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `timeouts.clone` | Timeout for cloning | `1800` |
-| `timeouts.create` | Timeout for VM creation | `1800` |
-| `timeouts.migrate` | Timeout for VM migration | `1800` |
-| `timeouts.reboot` | Timeout for VM reboot | `1800` |
-| `timeouts.shutdown_vm` | Timeout for VM shutdown | `1800` |
-| `timeouts.start_vm` | Timeout for VM startup | `1800` |
-| `timeouts.stop_vm` | Timeout for VM stop | `300` |
+| Variable | Description | Type | Default |
+|----------|-------------|------|---------|
+| `cpu_cores` | Number of CPU cores | `number` | `1` |
+| `cpu_sockets` | Number of CPU sockets | `number` | `1` |
+| `cpu_type` | CPU type | `string` | `"host"` |
+| `cpu_units` | CPU weight (relative to other VMs) | `number` | `1024` |
+| `cpu_limit` | CPU limit (0 = unlimited) | `number` | `0` |
+| `cpu_numa` | Enable NUMA | `bool` | `false` |
+| `cpu_hotplugged` | Number of hotplugged CPU cores | `number` | `0` |
+
+### Memory Configuration
+
+| Variable | Description | Type | Default |
+|----------|-------------|------|---------|
+| `memory_dedicated` | Dedicated memory in MB | `number` | `2048` |
+| `memory_floating` | Floating memory in MB | `number` | `0` |
+| `memory_shared` | Shared memory in MB | `number` | `0` |
+| `memory_keep_hugepages` | Keep hugepages after VM shutdown | `bool` | `false` |
+
+### Primary Disk Configuration
+
+| Variable | Description | Type | Default |
+|----------|-------------|------|---------|
+| `disk_size` | Primary disk size in GB | `number` | `10` |
+| `disk_datastore_id` | Datastore ID for primary disk | `string` | `"data"` |
+| `disk_interface` | Disk interface (virtio0, scsi0, etc.) | `string` | `"virtio0"` |
+| `disk_file_format` | Disk file format (raw, qcow2, vmdk) | `string` | `"qcow2"` |
+| `disk_cache` | Disk cache mode | `string` | `"none"` |
+| `disk_aio` | AIO mode | `string` | `"io_uring"` |
+| `disk_backup` | Include disk in backups | `bool` | `false` |
+| `disk_discard` | Discard mode (ignore, on) | `string` | `"ignore"` |
+| `disk_iothread` | Enable IO thread | `bool` | `false` |
+| `disk_replicate` | Enable replication | `bool` | `false` |
+| `disk_ssd` | Mark disk as SSD | `bool` | `false` |
+
+### Additional Disks (Optional)
+
+| Variable | Description | Type | Default |
+|----------|-------------|------|---------|
+| `additional_disks` | List of additional disks to attach to the VM | `list(object)` | `[]` |
+
+Each object in `additional_disks` supports the same parameters as the primary disk configuration.
+
+### Primary Network Device
+
+| Variable | Description | Type | Default |
+|----------|-------------|------|---------|
+| `network_bridge` | Network bridge for primary network device | `string` | `"vmbr0"` |
+| `network_model` | Network model (virtio, e1000, rtl8139) | `string` | `"virtio"` |
+| `network_enabled` | Enable primary network device | `bool` | `true` |
+| `network_firewall` | Enable firewall for primary network device | `bool` | `false` |
+| `network_mac_address` | MAC address for primary network device | `string` | `null` |
+| `network_mtu` | MTU for primary network device (0 = default) | `number` | `0` |
+| `network_queues` | Number of packet queues (0 = default) | `number` | `0` |
+| `network_rate_limit` | Rate limit in MB/s (0 = unlimited) | `number` | `0` |
+| `network_vlan_id` | VLAN ID (0 = no VLAN) | `number` | `0` |
+
+### Additional Network Devices (Optional)
+
+| Variable | Description | Type | Default |
+|----------|-------------|------|---------|
+| `additional_network_devices` | List of additional network devices | `list(object)` | `[]` |
+
+### Cloud-Init Configuration
+
+| Variable | Description | Type | Default |
+|----------|-------------|------|---------|
+| `init_datastore_id` | Datastore ID for cloud-init drive | `string` | `"data"` |
+| `init_interface` | Interface for cloud-init drive | `string` | `"scsi0"` |
+| `init_dns_servers` | List of DNS servers | `list(string)` | `["8.8.8.8", "8.8.4.4"]` |
+| `init_ip_address` | Primary IP address with CIDR | `string` | `"172.16.2.100/24"` |
+| `init_gateway` | Default gateway IP address | `string` | `"172.16.2.1"` |
+| `init_username` | Default user account username | `string` | `"ansible"` |
+| `init_password` | Default user account password | `string` | `"ansible"` |
+| `init_ssh_keys` | List of SSH public keys for default user | `list(string)` | See variables.tf |
+
+### Additional IP Configurations (Optional)
+
+| Variable | Description | Type | Default |
+|----------|-------------|------|---------|
+| `additional_ip_configs` | List of additional IP configurations | `list(object)` | `[]` |
 
 ## Outputs
-
-The module provides the following outputs:
 
 | Output Name | Description |
 |-------------|-------------|
 | `vm_id`     | The ID of the created VM |
 | `vm_name`   | The name of the created VM |
-| `vm_ip`     | The IP address of the created VM |
+| `vm_ip`     | The primary IP address of the created VM |
 
-You can access these outputs from your root module:
+Example usage:
 
-```tf
-output "proxmox_vm_id" {
-  value = module.proxmox_vm.vm_id
-}
-
-output "proxmox_vm_ip" {
-  value = module.proxmox_vm.vm_ip
+```hcl
+output "vm_details" {
+  value = {
+    id   = module.my_vm.vm_id
+    name = module.my_vm.vm_name
+    ip   = module.my_vm.vm_ip
+  }
 }
 ```
 
 ## Examples
 
-### Basic VM
+### Example 1: Basic Web Server
 
-```tf
-module "proxmox_vm" {
-  source = "bitbucket.org/ginanck/proxmox_terraform"
+A simple web server VM with minimal configuration:
 
-  vm = {
-    name        = "web-server"
-    description = "Web Server VM"
-    node_name   = "pve-node1"
-    vm_id       = 120
-    
-    cpu = {
-      cores = 2
-    }
-    
-    memory = {
-      dedicated = 4096
-    }
-  }
-}
-```
+```hcl
+module "web_server" {
+  source = "../../base"
 
-### VM with Cloud-Init and Custom Network
+  # Basic VM settings
+  name        = "web-server-01"
+  description = "Production Web Server"
+  node_name   = "proxmox-node1"
+  vm_id       = 200
+  tags        = ["web", "production"]
 
-```tf
-module "proxmox_vm" {
-  source = "bitbucket.org/ginanck/proxmox_terraform"
+  # Hardware configuration
+  cpu_cores        = 2
+  memory_dedicated = 4096
+  disk_size        = 20
 
-  vm = {
-    name        = "app-server"
-    description = "Application Server"
-    node_name   = "pve-node1"
-    vm_id       = 121
-    
-    cpu = {
-      cores = 4
-    }
-    
-    memory = {
-      dedicated = 8192
-    }
-    
-    network_device = {
-      bridge      = "vmbr0"
-      mac_address = "BC:24:11:4D:87:A0"
-      vlan_id     = 10
-    }
-    
-    additional_network_devices = [
-      {
-        bridge      = "vmbr1"
-        mac_address = "BC:24:11:4D:87:A1"
-        vlan_id     = 20
-      }
-    ]
-    
-    initialization = {
-      dns = {
-        servers = ["8.8.8.8", "8.8.4.4"]
-      }
-      
-      ip_config = {
-        ipv4 = {
-          address = "172.16.2.101/24"
-          gateway = "172.16.2.1"
-        }
-      }
-      
-      user_account = {
-        keys     = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmaSIzwHMrS7/nfYreiGrPfujrvABwnmODooaaIy66u user@example.com"]
-        password = "ubuntu"
-        username = "ubuntu"
-      }
-    }
-  }
-}
-```
-
-### VM with Additional Storage
-
-```tf
-module "proxmox_vm" {
-  source = "bitbucket.org/ginanck/proxmox_terraform"
-
-  vm = {
-    name        = "db-server"
-    description = "Database Server"
-    node_name   = "pve-node1"
-    vm_id       = 122
-    
-    cpu = {
-      cores = 8
-    }
-    
-    memory = {
-      dedicated = 16384
-    }
-    
-    disk = {
-      size         = 30
-      datastore_id = "local-lvm"
-      ssd          = true
-    }
-    
-    additional_disks = [
-      {
-        interface    = "virtio1"
-        size         = 100
-        datastore_id = "local-lvm"
-        ssd          = true
-      },
-      {
-        interface    = "virtio2"
-        size         = 200
-        datastore_id = "local-lvm"
-      }
-    ]
-  }
-}
-```
-
-### Clone From Template
-
-```tf
-module "proxmox_vm" {
-  source = "bitbucket.org/ginanck/proxmox_terraform"
-
-  vm = {
-    name        = "clone-from-template"
-    description = "VM cloned from template"
-    node_name   = "pve-node1"
-    vm_id       = 123
-    
-    cpu = {
-      cores = 2
-    }
-    
-    clone = {
-      vm_id        = 9000  # Source template ID
-      datastore_id = "local-lvm"
-      full         = true
-    }
-    
-    initialization = {
-      ip_config = {
-        ipv4 = {
-          address = "172.16.2.102/24"
-          gateway = "172.16.2.1"
-        }
-      }
-    }
-  }
-}
-```
-
-### Complete Example
-
-Here's a comprehensive example showcasing most available options:
-
-```tf
-module "proxmox_vm" {
-  source = "bitbucket.org/ginanck/proxmox_terraform"
+  # Network configuration  
+  network_bridge = "vmbr0"
   
-  vm = {
-    # Basic VM settings
-    name            = "complete-example"
-    description     = "Complete example VM"
-    node_name       = "pve-node1"
-    vm_id           = 200
-    
-    # VM behavior settings
-    acpi            = true
-    bios            = "seabios"
-    keyboard_layout = "en-us"
-    migrate         = false
-    on_boot         = true
-    protection      = true
-    reboot          = true
-    started         = true
-    stop_on_destroy = true
-    tablet_device   = true
-    template        = false
-    
-    # Hardware settings
-    scsi_hardware   = "virtio-scsi-pci"
-    
-    # Tags
-    tags            = ["prod", "example", "complete"]
-    
-    # Timeouts
-    timeouts = {
-      clone       = 1800
-      create      = 1800
-      migrate     = 1800
-      reboot      = 1800
-      shutdown_vm = 1800
-      start_vm    = 1800
-      stop_vm     = 300
-    }
-    
-    # Clone settings
-    clone = {
-      datastore_id = "local-lvm"
-      full         = true
-      retries      = 3
-      vm_id        = 9000
-    }
-    
-    # CPU configuration
-    cpu = {
-      cores      = 4
-      hotplugged = 0
-      limit      = 0
-      numa       = false
-      sockets    = 1
-      type       = "host"
-      units      = 1024
-    }
-    
-    # Memory configuration
-    memory = {
-      dedicated      = 4096
-      floating       = 0
-      keep_hugepages = false
-      shared         = 0
-    }
-    
-    # Primary disk
-    disk = {
-      aio          = "io_uring"
+  # Cloud-init configuration
+  init_ip_address = "192.168.1.100/24"
+  init_gateway    = "192.168.1.1"
+  init_dns_servers = ["192.168.1.1", "8.8.8.8"]
+  init_username   = "webadmin"
+  init_password   = "secure-password"
+  init_ssh_keys   = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmaSIzwHMrS7/nfYreiGrPfujrvABwnmODooaaIy66u admin@company.com"
+  ]
+
+  # Clone from template
+  clone_vm_id = 9000
+}
+```
+
+### Example 2: Database Server with Additional Storage
+
+A more complex database server with multiple disks and network interfaces:
+
+```hcl
+module "db_server" {
+  source = "../../base"
+
+  # Basic VM settings
+  name        = "db-server-01"
+  description = "PostgreSQL Database Server"
+  node_name   = "proxmox-node2" 
+  vm_id       = 300
+  tags        = ["database", "postgresql", "production"]
+
+  # Enhanced hardware configuration
+  cpu_cores        = 4
+  cpu_type         = "host"
+  memory_dedicated = 8192
+  
+  # Primary disk (OS)
+  disk_size         = 40
+  disk_datastore_id = "ssd-pool"
+  disk_ssd          = true
+  disk_backup       = true
+
+  # Additional storage for database
+  additional_disks = [
+    {
+      interface    = "virtio1"
+      size         = 100
+      datastore_id = "ssd-pool" 
+      ssd          = true
       backup       = true
-      cache        = "none"
-      datastore_id = "local-lvm"
-      discard      = "ignore"
-      interface    = "virtio0"
-      iothread     = false
-      replicate    = false
-      size         = 30
-      ssd          = true
-    }
-    
-    # Additional disks
-    additional_disks = [
-      {
-        interface    = "virtio1"
-        size         = 50
-        datastore_id = "local-lvm"
-        cache        = "none"
-        ssd          = true
-      },
-      {
-        interface    = "virtio2"
-        size         = 100
-        datastore_id = "local-lvm"
-        backup       = true
-      }
-    ]
-    
-    # Primary network device
-    network_device = {
-      bridge      = "vmbr0"
-      enabled     = true
-      firewall    = false
-      model       = "virtio"
-      mac_address = "BC:24:11:4D:87:B0"
-      mtu         = 0
-      queues      = 0
-      rate_limit  = 0
-      vlan_id     = 10
-    }
-    
-    # Additional network devices
-    additional_network_devices = [
-      {
-        bridge      = "vmbr1"
-        enabled     = true
-        firewall    = false
-        mac_address = "BC:24:11:4D:87:B1"
-        model       = "virtio"
-        vlan_id     = 20
-      },
-      {
-        bridge      = "vmbr2"
-        mac_address = "BC:24:11:4D:87:B2"
-        vlan_id     = 30
-      }
-    ]
-
-    # Initialization/Cloud-Init
-    initialization = {
-      datastore_id = "local-lvm"
-      
-      dns = {
-        servers = ["8.8.8.8", "8.8.4.4"]
-      }
-      
-      ip_config = {
-        ipv4 = {
-          address = "192.168.1.100/24"
-          gateway = "192.168.1.1"
-        }
-      }
-      
-      user_account = {
-        keys     = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmaSIzwHMrS7/nfYreiGrPfujrvABwnmODooaaIy66u user@example.com"]
-        password = "secure-password"
-        username = "admin"
-      }
-    }
-  }
-}
-```
-
-## Advanced Usage
-
-### Modifying Default Values
-
-While the module provides sensible defaults, you might want to modify them globally for your infrastructure. One approach is to create a wrapper module:
-
-```tf
-# modules/my-proxmox-vm/main.tf
-module "proxmox_vm_base" {
-  source = "bitbucket.org/ginanck/proxmox_terraform"
-
-  vm = merge({
-    # Your organization's defaults
-    tags       = ["managed-by-terraform", "org-name"]
-    scsi_hardware = "virtio-scsi-single"
-    
-    initialization = {
-      dns = {
-        servers = ["10.0.0.10", "10.0.0.11"]  # Internal DNS servers
-      }
-    }
-  }, var.vm)
-}
-
-# Passthrough all outputs
-output "vm_id" {
-  value = module.proxmox_vm_base.vm_id
-}
-
-output "vm_name" {
-  value = module.proxmox_vm_base.vm_name
-}
-
-output "vm_ip" {
-  value = module.proxmox_vm_base.vm_ip
-}
-```
-
-```tf
-# modules/my-proxmox-vm/variables.tf
-variable "vm" {
-  description = "VM configuration"
-  type        = any
-}
-```
-
-Then use your wrapper module:
-
-```tf
-module "app_server" {
-  source = "./modules/my-proxmox-vm"
-
-  vm = {
-    name        = "app-server"
-    description = "Application Server"
-    vm_id       = 300
-    
-    cpu = {
-      cores = 2
-    }
-  }
-}
-```
-
-### Working with Multiple VMs
-
-You can create multiple VMs using the `for_each` meta-argument:
-
-```tf
-locals {
-  vms = {
-    web1 = {
-      name     = "web-server-1"
-      vm_id    = 201
-      ip       = "192.168.1.101/24"
-      cores    = 2
-      memory   = 2048
     },
-    web2 = {
-      name     = "web-server-2"
-      vm_id    = 202
-      ip       = "192.168.1.102/24"
-      cores    = 2
-      memory   = 2048
-    },
-    db = {
-      name     = "db-server"
-      vm_id    = 203
-      ip       = "192.168.1.103/24"
-      cores    = 4
-      memory   = 8192
+    {
+      interface    = "virtio2"
+      size         = 200
+      datastore_id = "hdd-pool"
+      backup       = true
     }
-  }
-}
+  ]
 
-module "proxmox_vms" {
-  source   = "bitbucket.org/ginanck/proxmox_terraform"
-  for_each = local.vms
+  # Primary network (management)
+  network_bridge     = "vmbr0"
+  network_vlan_id    = 100
   
-  vm = {
-    name        = each.value.name
-    description = "VM managed by Terraform"
-    vm_id       = each.value.vm_id
-    node_name   = "proxmox-node1"
-    
-    cpu = {
-      cores = each.value.cores
+  # Additional network for database traffic
+  additional_network_devices = [
+    {
+      bridge  = "vmbr1"
+      vlan_id = 200
     }
-    
-    memory = {
-      dedicated = each.value.memory
+  ]
+
+  # Network configuration
+  init_ip_address = "10.0.100.50/24"
+  init_gateway    = "10.0.100.1"
+  init_dns_servers = ["10.0.100.10", "10.0.100.11"]
+  
+  # Additional IP for database network
+  additional_ip_configs = [
+    {
+      address = "10.0.200.50/24"
+      gateway = "10.0.200.1"
     }
-    
-    initialization = {
-      ip_config = {
-        ipv4 = {
-          address = each.value.ip
-          gateway = "192.168.1.1"
-        }
-      }
+  ]
+
+  # User configuration
+  init_username = "dbadmin"
+  init_password = "very-secure-password"
+  init_ssh_keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmaSIzwHMrS7/nfYreiGrPfujrvABwnmODooaaIy66u dba@company.com",
+    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC... backup-key@company.com"
+  ]
+
+  # Clone settings
+  clone_vm_id        = 9001  # Database template
+  clone_datastore_id = "ssd-pool"
+  clone_full         = true
+
+  # VM behavior
+  on_boot     = true
+  protection  = true
+  started     = true
+}
+```
+
+## Example 2: Multiple VMs
+
+Create multiple VMs using `for_each`:
+
+```hcl
+locals {
+  web_servers = {
+    web1 = {
+      vm_id = 201
+      ip    = "192.168.1.101/24"
+    }
+    web2 = {
+      vm_id = 202  
+      ip    = "192.168.1.102/24"
     }
   }
 }
 
-output "vm_ips" {
+module "web_servers" {
+  source   = "./base"
+  for_each = local.web_servers
+  
+  name                = "web-server-${each.key}"
+  description         = "Web Server ${each.key}"
+  vm_id              = each.value.vm_id
+  node_name          = "proxmox-node1"
+  
+  cpu_cores          = 2
+  memory_dedicated   = 4096
+  disk_size          = 20
+  
+  init_ip_address    = each.value.ip
+  init_gateway       = "192.168.1.1"
+  
+  clone_vm_id        = 9000
+  tags               = ["web", "production"]
+}
+
+output "web_server_ips" {
   value = {
-    for k, v in module.proxmox_vms : k => v.vm_ip
+    for k, v in module.web_servers : k => v.vm_ip
   }
 }
 ```
@@ -661,51 +402,28 @@ output "vm_ips" {
 
 ### Common Issues
 
-1. **Authentication Issues**:
-   Make sure your Proxmox API credentials are correct and have sufficient permissions.
+- **Authentication**: Verify Proxmox API credentials and permissions
+- **VM ID conflicts**: Ensure unique VM IDs across the cluster  
+- **Clone failures**: Verify source template exists and is accessible
+- **IP conflicts**: Use proper CIDR notation and ensure IPs are available
+- **Timeouts**: Increase timeout values for larger VMs or slower storage
 
-2. **Resource Already Exists**:
-   If you're getting errors about VM IDs already existing, make sure to use unique IDs or destroy the existing resources first.
+### Debug Mode
 
-3. **Clone Failures**:
-   Ensure that the source template exists and is accessible from the target node.
-
-4. **IP Configuration Issues**:
-   Make sure the specified IP addresses are in the correct format (with CIDR notation) and are valid for your network.
-
-5. **Timeouts**:
-   For larger VMs or slower storage, you may need to increase the timeout values.
-
-### Debugging
-
-Enable Terraform logging to see more detailed information:
+Enable Terraform debug logging:
 
 ```bash
 export TF_LOG=DEBUG
 export TF_LOG_PATH=./terraform.log
+terraform plan
 ```
 
-## Contributing
+## Requirements
 
-Contributions to improve this module are welcome. Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/new-feature`)
-3. Make your changes
-4. Commit your changes (`git commit -am 'Add new feature'`)
-5. Push to the branch (`git push origin feature/new-feature`)
-6. Create a new Pull Request
+- Terraform >= 1.0
+- Proxmox VE 7.0+
+- bpg/proxmox provider ~> 0.73.0
 
 ## License
 
-This module is available under the MIT License.
-
-## Support
-
-For issues, questions, or contributions, please contact:
-- Issue Tracker: [Bitbucket Repository Issues](https://bitbucket.org/ginanck/proxmox_terraform/issues)
-- Maintainer: [Maintainer Name](mailto:maintainer@example.com)
-
----
-
-This module is not officially affiliated with Proxmox or Terraform.
+MIT License

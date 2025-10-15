@@ -1,104 +1,116 @@
 resource "proxmox_virtual_environment_vm" "vm" {
-  name            = var.vm.name
-  description     = var.vm.description
-  node_name       = var.vm.node_name
-  vm_id           = var.vm.vm_id
-  acpi            = var.vm.acpi
+  # Basic settings
+  name        = var.name
+  description = var.description
+  node_name   = var.node_name
+  vm_id       = var.vm_id
+  tags        = var.tags
+
+  # VM behavior settings
+  acpi                = var.acpi
+  bios                = var.bios
+  keyboard_layout     = var.keyboard_layout
+  migrate             = var.migrate
+  on_boot             = var.on_boot
+  protection          = var.protection
+  reboot              = var.reboot
+  reboot_after_update = var.reboot_after_update
+  scsi_hardware       = var.scsi_hardware
+  started             = var.started
+  stop_on_destroy     = var.stop_on_destroy
+  tablet_device       = var.tablet_device
+  template            = var.template
+
+  # Agent configuration
   agent {
-    enabled       = var.vm.agent.enabled
+    enabled = var.agent_enabled
   }
 
-  bios                  = var.vm.bios
-  keyboard_layout       = var.vm.keyboard_layout
-  migrate               = var.vm.migrate
-  on_boot               = var.vm.on_boot
-  protection            = var.vm.protection
-  reboot                = var.vm.reboot
-  reboot_after_update   = var.vm.reboot_after_update
-  scsi_hardware         = var.vm.scsi_hardware
-  started               = var.vm.started
-  stop_on_destroy       = var.vm.stop_on_destroy
-  tablet_device         = var.vm.tablet_device
-  template              = var.vm.template
-  tags                  = var.vm.tags
+  # Timeouts
+  timeout_clone       = var.timeout_clone
+  timeout_create      = var.timeout_create
+  timeout_migrate     = var.timeout_migrate
+  timeout_reboot      = var.timeout_reboot
+  timeout_shutdown_vm = var.timeout_shutdown_vm
+  timeout_start_vm    = var.timeout_start_vm
+  timeout_stop_vm     = var.timeout_stop_vm
 
-  timeout_clone       = var.vm.timeouts.clone
-  timeout_create      = var.vm.timeouts.create
-  timeout_migrate     = var.vm.timeouts.migrate
-  timeout_reboot      = var.vm.timeouts.reboot
-  timeout_shutdown_vm = var.vm.timeouts.shutdown_vm
-  timeout_start_vm    = var.vm.timeouts.start_vm
-  timeout_stop_vm     = var.vm.timeouts.stop_vm
-
+  # Clone configuration
   clone {
-    datastore_id = var.vm.clone.datastore_id
-    full         = var.vm.clone.full
-    retries      = var.vm.clone.retries
-    vm_id        = var.vm.clone.vm_id
+    datastore_id = var.clone_datastore_id
+    full         = var.clone_full
+    retries      = var.clone_retries
+    vm_id        = var.clone_vm_id
   }
 
+  # CPU configuration
   cpu {
-    cores      = var.vm.cpu.cores
-    hotplugged = var.vm.cpu.hotplugged
-    limit      = var.vm.cpu.limit
-    numa       = var.vm.cpu.numa
-    sockets    = var.vm.cpu.sockets
-    type       = var.vm.cpu.type
-    units      = var.vm.cpu.units
+    cores      = var.cpu_cores
+    hotplugged = var.cpu_hotplugged
+    limit      = var.cpu_limit
+    numa       = var.cpu_numa
+    sockets    = var.cpu_sockets
+    type       = var.cpu_type
+    units      = var.cpu_units
   }
 
+  # Memory configuration
   memory {
-    dedicated      = var.vm.memory.dedicated
-    floating       = var.vm.memory.floating
-    keep_hugepages = var.vm.memory.keep_hugepages
-    shared         = var.vm.memory.shared
+    dedicated      = var.memory_dedicated
+    floating       = var.memory_floating
+    keep_hugepages = var.memory_keep_hugepages
+    shared         = var.memory_shared
   }
 
+  # Primary disk
   disk {
-    aio           = var.vm.disk.aio
-    backup        = var.vm.disk.backup
-    cache         = var.vm.disk.cache
-    datastore_id  = var.vm.disk.datastore_id
-    discard       = var.vm.disk.discard
-    interface     = var.vm.disk.interface
-    file_format   = var.vm.disk.file_format
-    iothread      = var.vm.disk.iothread
-    replicate     = var.vm.disk.replicate
-    size          = var.vm.disk.size
-    ssd           = var.vm.disk.ssd
+    aio          = var.disk_aio
+    backup       = var.disk_backup
+    cache        = var.disk_cache
+    datastore_id = var.disk_datastore_id
+    discard      = var.disk_discard
+    interface    = var.disk_interface
+    file_format  = var.disk_file_format
+    iothread     = var.disk_iothread
+    replicate    = var.disk_replicate
+    size         = var.disk_size
+    ssd          = var.disk_ssd
   }
 
+  # Additional disks
   dynamic "disk" {
-    for_each = var.vm.additional_disks
+    for_each = var.additional_disks
     content {
-      aio           = disk.value.aio
-      backup        = disk.value.backup
-      cache         = disk.value.cache
-      datastore_id  = disk.value.datastore_id
-      discard       = disk.value.discard
-      interface     = disk.value.interface
-      file_format   = disk.value.file_format
-      iothread      = disk.value.iothread
-      replicate     = disk.value.replicate
-      size          = disk.value.size
-      ssd           = disk.value.ssd
+      aio          = disk.value.aio
+      backup       = disk.value.backup
+      cache        = disk.value.cache
+      datastore_id = disk.value.datastore_id
+      discard      = disk.value.discard
+      interface    = disk.value.interface
+      file_format  = disk.value.file_format
+      iothread     = disk.value.iothread
+      replicate    = disk.value.replicate
+      size         = disk.value.size
+      ssd          = disk.value.ssd
     }
   }
 
+  # Primary network device
   network_device {
-    bridge      = var.vm.network_device.bridge
-    enabled     = var.vm.network_device.enabled
-    firewall    = var.vm.network_device.firewall
-    mac_address = var.vm.network_device.mac_address
-    model       = var.vm.network_device.model
-    mtu         = var.vm.network_device.mtu
-    queues      = var.vm.network_device.queues
-    rate_limit  = var.vm.network_device.rate_limit
-    vlan_id     = var.vm.network_device.vlan_id
+    bridge      = var.network_bridge
+    enabled     = var.network_enabled
+    firewall    = var.network_firewall
+    mac_address = var.network_mac_address
+    model       = var.network_model
+    mtu         = var.network_mtu
+    queues      = var.network_queues
+    rate_limit  = var.network_rate_limit
+    vlan_id     = var.network_vlan_id
   }
 
+  # Additional network devices
   dynamic "network_device" {
-    for_each = var.vm.additional_network_devices
+    for_each = var.additional_network_devices
     content {
       bridge      = network_device.value.bridge
       enabled     = network_device.value.enabled
@@ -112,35 +124,37 @@ resource "proxmox_virtual_environment_vm" "vm" {
     }
   }
 
+  # Initialization (Cloud-Init)
   initialization {
-    datastore_id = var.vm.initialization.datastore_id
-    interface    = var.vm.initialization.interface
+    datastore_id = var.init_datastore_id
+    interface    = var.init_interface
 
     dns {
-      servers = var.vm.initialization.dns.servers
+      servers = var.init_dns_servers
     }
 
     ip_config {
       ipv4 {
-        address = var.vm.initialization.ip_config.ipv4.address
-        gateway = var.vm.initialization.ip_config.ipv4.gateway
+        address = var.init_ip_address
+        gateway = var.init_gateway
       }
     }
 
+    # Additional IP configurations
     dynamic "ip_config" {
-      for_each = var.vm.initialization.additional_ip_configs
+      for_each = var.additional_ip_configs
       content {
         ipv4 {
-          address = ip_config.value.ipv4.address
-          gateway = ip_config.value.ipv4.gateway
+          address = ip_config.value.address
+          gateway = ip_config.value.gateway
         }
       }
     }
 
     user_account {
-      keys     = var.vm.initialization.user_account.keys
-      password = var.vm.initialization.user_account.password
-      username = var.vm.initialization.user_account.username
+      keys     = var.init_ssh_keys
+      password = var.init_password
+      username = var.init_username
     }
   }
 }
