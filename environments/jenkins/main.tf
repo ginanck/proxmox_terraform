@@ -7,16 +7,14 @@ module "jenkins_master" {
 
   # Basic settings
   name        = "172-16-2-41-jenkins-master"
-  description = "Master for Jenkins"
   vm_id       = 241
-  node_name   = "carbon"
+  description = "Master for Jenkins"
   tags        = ["dev", "jenkins", "master"]
 
   # Hardware
   cpu_cores        = 4
   memory_dedicated = 8192
   disk_size        = 20
-  bios             = "seabios"
   
   # Additional storage
   additional_disks = [
@@ -44,16 +42,14 @@ module "jenkins_slaves" {
 
   # Basic settings
   name        = each.value.name
-  description = "Slave for Jenkins"
   vm_id       = each.value.vm_id
-  node_name   = "carbon"
+  description = "Slave for Jenkins"
   tags        = ["dev", "jenkins", "slave"]
 
   # Hardware
   cpu_cores        = 4
   memory_dedicated = 4096
   disk_size        = 20
-  bios             = "seabios"
   
   # Additional storage
   additional_disks = [

@@ -7,16 +7,14 @@ module "harbor" {
 
   # Basic settings
   name        = "172-16-2-35-harbor"
-  description = "Harbor for Docker Registry"
   vm_id       = 235
-  node_name   = "carbon"
+  description = "Harbor for Docker Registry"
   tags        = ["dev", "harbor", "registry"]
 
   # Hardware
   cpu_cores        = 4
   memory_dedicated = 8192
   disk_size        = 20
-  bios             = "seabios"
   
   # Additional storage
   additional_disks = [

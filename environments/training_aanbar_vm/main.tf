@@ -7,16 +7,14 @@ module "ansible-lab" {
 
   # Basic settings
   name        = "172-16-3-200-ansible-lab"
-  description = "ansible lab"
   vm_id       = 400
-  node_name   = "carbon"
+  description = "ansible lab"
   tags        = ["ansible-lab"]
 
   # Hardware
   cpu_cores        = 4
   memory_dedicated = 8192
   disk_size        = 20
-  bios             = "seabios"
   
   # Additional storage
   additional_disks = [
