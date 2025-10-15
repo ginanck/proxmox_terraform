@@ -17,14 +17,14 @@ module "lb_nginx" {
   disk_size        = 40
   
   # Additional storage
-  additional_disks = [
+  disk_additional = [
     { size = 100, interface = "virtio1" }
   ]
   
   # Network
   network_bridge      = "vmbr1"
   network_mac_address = "00:50:56:01:17:1D"
-  additional_network_devices = [
+  network_additional = [
     {
       bridge  = "vmbr1"
       address = "172.16.2.53/23"
