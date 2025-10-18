@@ -3,19 +3,19 @@ default_stages: [pre-commit, manual]
 default_install_hook_types: [pre-commit, pre-push, commit-msg, prepare-commit-msg]
 
 repos:
-  # Security scanning
-  - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.28.0
+  # Local tools (must be installed in your environment)
+  - repo: local
     hooks:
+      # ==================== SECURITY HOOKS ====================
       - id: gitleaks
-        name: Detect hardcoded secrets
+        name: GitLeaks Security Scan
         entry: gitleaks
-        args: ['detect', '--source', '.', '--verbose']
         language: system
+        args: ["detect", "--source", ".", "--verbose"]
         pass_filenames: false
         always_run: true
 
-  # OpenTofu/Terraform
+  # OpenTofu
   - repo: https://github.com/tofuutils/pre-commit-opentofu
     rev: v2.2.1
     hooks:
@@ -24,7 +24,8 @@ repos:
       - id: tofu_docs
       - id: tofu_tflint
         args:
-          - --args=--disable-rule=terraform_required_version --disable-rule=terraform_required_providers
+          - --args=--disable-rule=terraform_required_version
+          - --args=--disable-rule=terraform_required_providers
 
   # General file formatting and validation
   - repo: https://github.com/pre-commit/pre-commit-hooks
