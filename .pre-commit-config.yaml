@@ -15,13 +15,20 @@ repos:
         pass_filenames: false
         always_run: true
 
+      # ==================== DOCUMENTATION HOOKS ====================
+      - id: tofu-docs
+        name: Generate OpenTofu Docs
+        entry: bash -c 'cd base && terraform-docs markdown table . --output-file README.md --output-mode inject'
+        language: system
+        pass_filenames: false
+        files: ^base/
+
   # OpenTofu
   - repo: https://github.com/tofuutils/pre-commit-opentofu
     rev: v2.2.1
     hooks:
       - id: tofu_fmt
       - id: tofu_validate
-      - id: tofu_docs
       - id: tofu_tflint
         args:
           - --args=--disable-rule=terraform_required_version
