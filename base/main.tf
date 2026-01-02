@@ -1,3 +1,7 @@
+locals {
+  host_ip_address = split("/", var.init_ip_address)[0]
+}
+
 resource "proxmox_virtual_environment_vm" "vm" {
   # Basic settings
   name        = var.name
@@ -152,9 +156,65 @@ resource "proxmox_virtual_environment_vm" "vm" {
     }
 
     user_account {
-      keys     = var.init_ssh_keys
-      password = var.init_password
       username = var.init_username
+      password = var.init_password
+      keys     = var.init_ssh_keys
     }
+  }
+}
+
+# Wait for WinRM to become available before running provisioners
+resource "null_resource" "wait_for_winrm" {
+  count = var.is_windows ? 1 : 0
+
+  depends_on = [proxmox_virtual_environment_vm.vm]
+
+  triggers = {
+    vm_id = proxmox_virtual_environment_vm.vm.id
+  }
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      echo "Waiting for WinRM on ${local.host_ip_address}..."
+      for i in $(seq 1 ${var.winrm_max_attempts}); do
+        curl -s -o /dev/null -w '' --max-time 3 http://${local.host_ip_address}:5985/wsman && \
+          echo "WinRM ready" && sleep ${var.winrm_settle_time} && exit 0
+        sleep ${var.winrm_retry_delay}
+      done
+      echo "WinRM timeout" && exit 1
+    EOT
+  }
+}
+
+resource "null_resource" "configure_disks" {
+  count = var.is_windows ? 1 : 0
+
+  depends_on = [
+    null_resource.wait_for_winrm,
+  ]
+
+  # Trigger on disk size changes (primary + additional disks)
+  triggers = {
+    disk_config = jsonencode({
+      primary          = var.disk_size
+      additional_sizes = [for disk in var.disk_additional : disk.size]
+    })
+  }
+
+  connection {
+    type     = "winrm"
+    host     = local.host_ip_address
+    user     = var.init_username
+    password = var.init_password
+    port     = 5985
+    https    = false
+    insecure = true
+    timeout  = var.winrm_timeout
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "powershell.exe -ExecutionPolicy Bypass -File \"C:\\Program Files\\Cloudbase Solutions\\Cloudbase-Init\\pc2_scripts\\Runtime-ManageDisks.ps1\""
+    ]
   }
 }

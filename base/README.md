@@ -30,6 +30,7 @@ This module is designed to be used with Terragrunt. See the `examples/` director
 
 | Name | Version |
 |------|---------|
+| <a name="provider_null"></a> [null](#provider\_null) | 3.2.4 |
 | <a name="provider_proxmox"></a> [proxmox](#provider\_proxmox) | 0.85.1 |
 
 ## Modules
@@ -40,6 +41,8 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [null_resource.configure_disks](https://registry.terraform.io/providers/hashicorp/null/3.2.4/docs/resources/resource) | resource |
+| [null_resource.wait_for_winrm](https://registry.terraform.io/providers/hashicorp/null/3.2.4/docs/resources/resource) | resource |
 | [proxmox_virtual_environment_vm.vm](https://registry.terraform.io/providers/bpg/proxmox/0.85.1/docs/resources/virtual_environment_vm) | resource |
 
 ## Inputs
@@ -82,6 +85,7 @@ No modules.
 | <a name="input_init_password"></a> [init\_password](#input\_init\_password) | Default user account password | `string` | `"dummy"` | no |
 | <a name="input_init_ssh_keys"></a> [init\_ssh\_keys](#input\_init\_ssh\_keys) | List of SSH public keys for default user | `list(string)` | <pre>[<br/>  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmaSIzwHMrS7/nfYreiGrPfujrvABwnmODooaaIy66u ansible@gkorkmaz",<br/>  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEKPfGz+sMQ+ZwXjvgS0W4SJOoeJQA72Kx24tRW+Uf5p gkorkmaz"<br/>]</pre> | no |
 | <a name="input_init_username"></a> [init\_username](#input\_init\_username) | Default user account username | `string` | `"dummy"` | no |
+| <a name="input_is_windows"></a> [is\_windows](#input\_is\_windows) | Set to true if the VM is Windows; false for Linux | `bool` | `false` | no |
 | <a name="input_keyboard_layout"></a> [keyboard\_layout](#input\_keyboard\_layout) | Keyboard layout | `string` | `"en-us"` | no |
 | <a name="input_memory_dedicated"></a> [memory\_dedicated](#input\_memory\_dedicated) | Dedicated memory in MB | `number` | `2048` | no |
 | <a name="input_memory_floating"></a> [memory\_floating](#input\_memory\_floating) | Floating memory in MB | `number` | `0` | no |
@@ -118,6 +122,10 @@ No modules.
 | <a name="input_timeout_start_vm"></a> [timeout\_start\_vm](#input\_timeout\_start\_vm) | Timeout for start operations (seconds) | `number` | `1800` | no |
 | <a name="input_timeout_stop_vm"></a> [timeout\_stop\_vm](#input\_timeout\_stop\_vm) | Timeout for stop operations (seconds) | `number` | `300` | no |
 | <a name="input_vm_id"></a> [vm\_id](#input\_vm\_id) | VM ID (must be unique across the Proxmox cluster) | `number` | `110` | no |
+| <a name="input_winrm_max_attempts"></a> [winrm\_max\_attempts](#input\_winrm\_max\_attempts) | Maximum number of WinRM connectivity check attempts before failing | `number` | `60` | no |
+| <a name="input_winrm_retry_delay"></a> [winrm\_retry\_delay](#input\_winrm\_retry\_delay) | Seconds to wait between WinRM connectivity check attempts | `number` | `10` | no |
+| <a name="input_winrm_settle_time"></a> [winrm\_settle\_time](#input\_winrm\_settle\_time) | Seconds to wait after WinRM responds before running provisioners | `number` | `30` | no |
+| <a name="input_winrm_timeout"></a> [winrm\_timeout](#input\_winrm\_timeout) | Timeout for WinRM connection attempts | `string` | `"10m"` | no |
 
 ## Outputs
 

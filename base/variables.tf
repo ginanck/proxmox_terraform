@@ -554,3 +554,36 @@ variable "additional_ip_configs" {
 
   # This variable is entirely optional - VMs will work perfectly fine with just the primary IP configuration
 }
+
+# ------------------------------------------------------------------
+# Windows settings
+# ------------------------------------------------------------------
+variable "is_windows" {
+  description = "Set to true if the VM is Windows; false for Linux"
+  type        = bool
+  default     = false
+}
+
+variable "winrm_max_attempts" {
+  description = "Maximum number of WinRM connectivity check attempts before failing"
+  type        = number
+  default     = 60
+}
+
+variable "winrm_retry_delay" {
+  description = "Seconds to wait between WinRM connectivity check attempts"
+  type        = number
+  default     = 10
+}
+
+variable "winrm_settle_time" {
+  description = "Seconds to wait after WinRM responds before running provisioners"
+  type        = number
+  default     = 30
+}
+
+variable "winrm_timeout" {
+  description = "Timeout for WinRM connection attempts"
+  type        = string
+  default     = "10m"
+}
