@@ -165,13 +165,9 @@ resource "proxmox_virtual_environment_vm" "vm" {
 
 # Wait for WinRM to become available before running provisioners
 resource "null_resource" "wait_for_winrm" {
-  count = var.is_windows ? 1 : 0
+  count = var.is_windows && var.force_update ? 1 : 0
 
   depends_on = [proxmox_virtual_environment_vm.vm]
-
-  triggers = {
-    vm_id = proxmox_virtual_environment_vm.vm.id
-  }
 
   provisioner "local-exec" {
     command = <<-EOT
@@ -187,7 +183,7 @@ resource "null_resource" "wait_for_winrm" {
 }
 
 resource "null_resource" "configure_disks" {
-  count = var.is_windows ? 1 : 0
+  count = var.is_windows && var.force_update ? 1 : 0
 
   depends_on = [
     null_resource.wait_for_winrm,

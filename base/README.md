@@ -77,6 +77,7 @@ No modules.
 | <a name="input_disk_replicate"></a> [disk\_replicate](#input\_disk\_replicate) | Enable replication | `bool` | `false` | no |
 | <a name="input_disk_size"></a> [disk\_size](#input\_disk\_size) | Primary disk size in GB | `number` | `10` | no |
 | <a name="input_disk_ssd"></a> [disk\_ssd](#input\_disk\_ssd) | Mark disk as SSD | `bool` | `false` | no |
+| <a name="input_force_update"></a> [force\_update](#input\_force\_update) | Run post-initialization tasks when true (default=false). Set to true for subsequent applies to execute post-init provisioners. | `bool` | `false` | no |
 | <a name="input_init_datastore_id"></a> [init\_datastore\_id](#input\_init\_datastore\_id) | Datastore ID for cloud-init drive | `string` | `"data"` | no |
 | <a name="input_init_dns_servers"></a> [init\_dns\_servers](#input\_init\_dns\_servers) | List of DNS servers | `list(string)` | <pre>[<br/>  "8.8.8.8",<br/>  "8.8.4.4"<br/>]</pre> | no |
 | <a name="input_init_gateway"></a> [init\_gateway](#input\_init\_gateway) | Default gateway IP address | `string` | `"172.16.2.1"` | no |

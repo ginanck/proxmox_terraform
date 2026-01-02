@@ -587,3 +587,9 @@ variable "winrm_timeout" {
   type        = string
   default     = "10m"
 }
+
+variable "force_update" {
+  description = "Run post-initialization tasks when true (default=false). Set to true for subsequent applies to execute post-init provisioners."
+  type        = bool
+  default     = false
+}

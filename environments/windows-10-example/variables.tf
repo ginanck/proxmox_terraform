@@ -8,5 +8,5 @@ variable "init_password" {
   description = "Default password for cloud-init user"
   type        = string
   sensitive   = true
-  default     = "dummyPass"
+  default     = "dummyPassword"
 }
