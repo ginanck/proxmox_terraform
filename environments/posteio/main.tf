@@ -1,37 +1,18 @@
 module "posteio" {
-  source = "../../base"
+  source = "git::https://github.com/ginanck/terraform-proxmox-vm.git?ref=master"
 
   providers = {
     proxmox = proxmox
   }
 
-  # Basic settings
-  name        = "157-180-50-19-posteio"
-  vm_id       = 102
-  description = "Poste.io Dockerized Email Server"
-  tags        = ["dev", "posteio"]
+  proxmox_endpoint  = var.proxmox_endpoint
+  proxmox_api_token = var.proxmox_api_token
 
-  # Hardware
-  cpu_cores        = 4
-  memory_dedicated = 8192
-  disk_size        = 20
-  disk_additional = [
-    { size = 100, interface = "virtio1" }
-  ]
+  vms = local.vms
 
-  # Network
-  network_bridge      = "vmbr0"
-  network_mac_address = "00:50:56:01:16:34"
-  init_gateway        = "157.180.50.1"
-  init_ip_address     = "157.180.50.19/26"
-  init_username       = var.init_username
-  init_password       = var.init_password
-
-  # Clone settings
-  clone_vm_id = 8150
-}
-
-output "vm_details" {
-  description = "VM Information"
-  value       = module.posteio.vm_details
+  # Common settings
+  clone_vm_id      = 8150
+  network_bridge   = "vmbr0"
+  init_gateway     = "157.180.50.1"
+  init_dns_servers = ["8.8.8.8", "8.8.4.4"]
 }

@@ -1,42 +1,18 @@
 module "lb_nginx" {
-  source = "../../base"
+  source = "git::https://github.com/ginanck/terraform-proxmox-vm.git?ref=master"
 
   providers = {
     proxmox = proxmox
   }
 
-  # Basic settings
-  name        = "157-180-50-18-lb-nginx"
-  vm_id       = 411
-  description = "Nginx for experimentation"
-  tags        = ["experiment", "loadbalancer", "nginx"]
+  proxmox_endpoint  = var.proxmox_endpoint
+  proxmox_api_token = var.proxmox_api_token
 
-  # Hardware
-  cpu_cores        = 2
-  memory_dedicated = 4096
-  disk_size        = 40
+  vms = local.vms
 
-  # Additional storage
-  disk_additional = [
-    { size = 100, interface = "virtio1" }
-  ]
-
-  # Network
-  network_bridge      = "vmbr1"
-  network_mac_address = "00:50:56:01:17:1D"
-  network_additional = [
-    {
-      bridge  = "vmbr1"
-      address = "172.16.2.53/23"
-      gateway = ""
-    }
-  ]
-
-  init_gateway    = ""
-  init_ip_address = "dhcp"
-  init_username   = var.init_username
-  init_password   = var.init_password
-
-  # Clone settings
-  clone_vm_id = 8150
+  # Common settings
+  clone_vm_id      = 8150
+  network_bridge   = "vmbr1"
+  init_gateway     = null
+  init_dns_servers = ["8.8.8.8", "8.8.4.4"]
 }

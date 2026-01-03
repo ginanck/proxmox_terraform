@@ -1,38 +1,18 @@
 module "harbor" {
-  source = "../../base"
+  source = "git::https://github.com/ginanck/terraform-proxmox-vm.git?ref=master"
 
   providers = {
     proxmox = proxmox
   }
 
-  # Basic settings
-  name        = "172-16-2-35-harbor"
-  vm_id       = 235
-  description = "Harbor for Docker Registry"
-  tags        = ["dev", "harbor", "registry"]
+  proxmox_endpoint  = var.proxmox_endpoint
+  proxmox_api_token = var.proxmox_api_token
 
-  # Hardware
-  cpu_cores        = 4
-  memory_dedicated = 8192
-  disk_size        = 20
+  vms = local.vms
 
-  # Additional storage
-  disk_additional = [
-    { size = 200, interface = "virtio1" }
-  ]
-
-  # Network
-  network_bridge  = "vmbr1"
-  init_gateway    = "172.16.2.1"
-  init_ip_address = "172.16.2.35/23"
-  init_username   = var.init_username
-  init_password   = var.init_password
-
-  # Clone settings
-  clone_vm_id = 8150
-}
-
-output "vm_details" {
-  description = "VM Information"
-  value       = module.harbor.vm_details
+  # Common settings
+  clone_vm_id      = 8150
+  network_bridge   = "vmbr1"
+  init_gateway     = "172.16.2.1"
+  init_dns_servers = ["8.8.8.8", "8.8.4.4"]
 }

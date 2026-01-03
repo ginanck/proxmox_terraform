@@ -1,33 +1,18 @@
 module "smallstep" {
-  source = "../../base"
+  source = "git::https://github.com/ginanck/terraform-proxmox-vm.git?ref=master"
 
   providers = {
     proxmox = proxmox
   }
 
-  # Basic settings
-  name        = "172-16-2-20-smallstep"
-  vm_id       = 220
-  description = "smallstep CA for lab setup"
-  tags        = ["dev", "smallstep"]
+  proxmox_endpoint  = var.proxmox_endpoint
+  proxmox_api_token = var.proxmox_api_token
 
-  # Hardware
-  cpu_cores        = 2
-  memory_dedicated = 2048
-  disk_size        = 16
+  vms = local.vms
 
-  # Network
-  network_bridge  = "vmbr1"
-  init_gateway    = "172.16.2.1"
-  init_ip_address = "172.16.2.20/23"
-  init_username   = var.init_username
-  init_password   = var.init_password
-
-  # Clone settings
-  clone_vm_id = 8053
-}
-
-output "vm_details" {
-  description = "VM Information"
-  value       = module.smallstep.vm_details
+  # Common settings
+  clone_vm_id      = 8053
+  network_bridge   = "vmbr1"
+  init_gateway     = "172.16.2.1"
+  init_dns_servers = ["8.8.8.8", "8.8.4.4"]
 }
