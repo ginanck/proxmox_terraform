@@ -1,4 +1,4 @@
-module "windows-10" {
+module "windows-example" {
   source = "../../base"
 
   providers = {
@@ -8,8 +8,8 @@ module "windows-10" {
   # Basic settings
   name        = "172-16-3-220-Win10"
   vm_id       = 2801
-  description = "Windows 10"
-  tags        = ["windows", "windows-10"]
+  description = "Win10"
+  tags        = ["windows"]
 
   bios = "ovmf"
 
@@ -26,16 +26,15 @@ module "windows-10" {
 
   network_bridge   = "vmbr1"
   init_gateway     = "172.16.2.1"
-  init_ip_address  = "172.16.3.220/23"
+  init_ip_address  = "172.16.3.219/23"
   init_dns_servers = ["172.16.2.1"]
 
   init_username = var.init_username
   init_password = var.init_password
 
   # Clone settings
-  clone_vm_id = 7954
+  clone_vm_id = 7902
 
   force_update = false
-
-  is_windows = true
+  is_windows   = true
 }
