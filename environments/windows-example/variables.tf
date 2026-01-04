@@ -4,6 +4,12 @@ variable "proxmox_endpoint" {
   type        = string
 }
 
+variable "proxmox_insecure" {
+  description = "Disable TLS verification for Proxmox API"
+  type        = bool
+  default     = true
+}
+
 variable "proxmox_api_token" {
   description = "Proxmox terraform connection api token"
   type        = string

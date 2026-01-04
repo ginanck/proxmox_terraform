@@ -6,13 +6,14 @@ module "windows-example" {
   }
 
   proxmox_endpoint  = var.proxmox_endpoint
+  proxmox_insecure  = var.proxmox_insecure
   proxmox_api_token = var.proxmox_api_token
 
-  vms = local.vms
+  clone_vm_id      = 7902
+  network_bridge   = "vmbr1"
+  init_gateway     = "172.16.2.1"
+  init_dns_servers = ["8.8.8.8", "8.8.4.4"]
+  is_windows       = true
 
-  # Common settings
-  clone_vm_id    = 7902
-  network_bridge = "vmbr1"
-  init_gateway   = "172.16.2.1"
-  is_windows     = true
+  vms = local.vms
 }
