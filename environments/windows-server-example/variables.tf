@@ -18,12 +18,12 @@ variable "proxmox_api_token" {
 variable "init_username" {
   description = "Default username for cloud-init"
   type        = string
-  default     = "ansible"
+  default     = "Administrator"
 }
 
 variable "init_password" {
   description = "Default password for cloud-init user"
   type        = string
   sensitive   = true
-  default     = "ansible"
+  default     = "Passw0rd1"
 }
