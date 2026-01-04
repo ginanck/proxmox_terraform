@@ -9,7 +9,6 @@ module "windows-example" {
   proxmox_insecure  = var.proxmox_insecure
   proxmox_api_token = var.proxmox_api_token
 
-  clone_vm_id      = 7902
   network_bridge   = "vmbr1"
   init_gateway     = "172.16.2.1"
   init_dns_servers = ["8.8.8.8", "8.8.4.4"]

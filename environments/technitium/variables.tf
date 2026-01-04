@@ -15,15 +15,15 @@ variable "proxmox_api_token" {
   type        = string
 }
 
-# VM Initialization Variables (secrets that will come from tfvars)
 variable "init_username" {
-  description = "Default user account username for Harbor VM"
+  description = "Default username for cloud-init"
   type        = string
-  sensitive   = true
+  default     = "ansible"
 }
 
 variable "init_password" {
-  description = "Default user account password for Harbor VM"
+  description = "Default password for cloud-init user"
   type        = string
   sensitive   = true
+  default     = "ansible"
 }
